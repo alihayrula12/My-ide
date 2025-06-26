@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My IDE</title>
+  <title>My Awesome IDE</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://unpkg.com/monaco-editor@0.34.0/min/vs/editor/editor.main.css">
 </head>
 <body>
-  <h1>My IDE</h1>
-  <div id="editor" style="height: 500px; width: 100%; border: 1px solid gray;"></div>
-  <button onclick="runCode()">Run Code</button>
-  <pre id="output">Output will appear here...</pre>
+  <div class="container">
+    <h1>My Awesome IDE</h1>
+    <div class="toolbar">
+      <select id="language" onchange="changeLanguage()">
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="html">HTML</option>
+      </select>
+      <button onclick="runCode()">Run Code</button>
+    </div>
+    <div class="ai-section">
+      <textarea id="ai-prompt" placeholder="Enter AI prompt, e.g., 'Complete this function'"></textarea>
+      <button onclick="requestAI()">Ask AI</button>
+    </div>
+    <div class="editor-container">
+      <div id="editor" style="height: 500px; width: 100%; border: 1px solid gray;"></div>
+      <pre id="output">Output will appear here...</pre>
+    </div>
+  </div>
   <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
   <script src="script.js"></script>
 </body>
