@@ -64,4 +64,5 @@ button:hover {
   min-height: 100px;
   white-space: pre-wrap;
   font-family: monospace;
+  display: block; /* Ensure visibility */
 }
