@@ -40,6 +40,9 @@ require(['vs/editor/editor.main'], () => {
         document.getElementById('output').textContent = 'AI not available on iPad...';
       }
     };
+    window.startCollaboration = () => {
+      document.getElementById('output').textContent = 'Collaboration not available on iPad...';
+    };
   } catch (error) {
     document.getElementById('output').textContent = 'Editor error: ' + error.message;
   }
