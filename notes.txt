@@ -1,0 +1,10 @@
+Languages:
+- JavaScript (Node.js container)
+- Python (Python 3.11 container)
+AI Prompts:
+- "Complete this JavaScript function"
+- "Fix this Python syntax error"
+Features:
+- Code execution (Docker)
+- AI code suggestions (Ollama/Gemma 7B)
+- Optional: Collaboration (Yjs/WebSocket) 
