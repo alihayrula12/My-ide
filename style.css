@@ -57,12 +57,3 @@ button:hover {
   flex-direction: column;
   gap: 10px;
 }
-#output {
-  padding: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  min-height: 100px;
-  white-space: pre-wrap;
-  font-family: monospace;
-  display: block; /* Ensure visibility */
-}
