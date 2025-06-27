@@ -10,7 +10,7 @@ body {
   max-width: 1200px;
   width: 100%;
   padding: 20px;
-  padding-bottom: 60px;
+  padding-bottom: 60px; /* Space for nav */
 }
 header {
   text-align: center;
@@ -175,17 +175,19 @@ select {
   display: flex;
   justify-content: center;
   gap: 20px;
-  border-top: 2px solid #C8102E; /* NBA Red border */
+  border-top: 2px solid #C8102E;
+  z-index: 1000; /* Ensure visibility */
 }
 .nav-item {
-  color: #00d4ff; /* Cyan text */
+  color: #00d4ff;
   text-decoration: none;
   font-size: 16px;
   padding: 8px 16px;
   border-radius: 6px;
   transition: background-color 0.2s;
+  opacity: 1; /* Ensure visibility */
 }
 .nav-item:hover {
-  background-color: #C8102E; /* NBA Red on hover */
+  background-color: #C8102E;
   color: white;
 }
