@@ -47,6 +47,14 @@ require(['vs/editor/editor.main'], () => {
       const console = document.getElementById('output');
       console.classList.toggle('hidden');
     };
+    // Add Enter key listener for AI prompt
+    const aiPrompt = document.getElementById('ai-prompt');
+    aiPrompt.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // Prevent newline
+        window.requestAI(); // Trigger AI request
+      }
+    });
   } catch (error) {
     document.getElementById('output').textContent = 'Editor error: ' + error.message;
   }
