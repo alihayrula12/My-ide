@@ -43,6 +43,10 @@ require(['vs/editor/editor.main'], () => {
     window.startCollaboration = () => {
       document.getElementById('output').textContent = 'Collaboration not available on iPad...';
     };
+    window.toggleConsole = () => {
+      const console = document.getElementById('output');
+      console.classList.toggle('hidden');
+    };
   } catch (error) {
     document.getElementById('output').textContent = 'Editor error: ' + error.message;
   }
