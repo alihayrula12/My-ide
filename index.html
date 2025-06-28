@@ -14,7 +14,7 @@
             <h1><span class="logo">🧶💻</span> REPLICAT</h1>
         </header>
         <div class="toolbar">
-            <select id="language" title="Select Language">
+            <select id="language" class="btn btn-select" title="Select Language">
                 <option value="javascript">JavaScript</option>
                 <option value="python">Python</option>
                 <option value="html">HTML</option>
@@ -41,9 +41,9 @@
             </div>
         </div>
         <nav class="bottom-nav">
-            <a href="#" class="nav-item">Projects</a>
-            <a href="#" class="nav-item">Create</a>
-            <a href="#" class="nav-item">Profile Settings</a>
+            <a href="#" class="nav-item btn" data-nav="projects">Projects</a>
+            <a href="#" class="nav-item btn" data-nav="create">Create</a>
+            <a href="#" class="nav-item btn" data-nav="profile">Profile Settings</a>
         </nav>
     </div>
     <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>

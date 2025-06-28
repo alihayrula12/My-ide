@@ -16,23 +16,64 @@ require(['vs/editor/editor.main'], () => {
         const terminal = document.getElementById('terminal');
         const editorElement = document.getElementById('editor');
         const toggleConsoleButton = document.querySelector('.btn-toggle-console');
+        const navItems = document.querySelectorAll('.nav-item');
+        const languageSelect = document.getElementById('language');
+        const runButton = document.querySelector('.btn-run');
+        const collaborateButton = document.querySelector('.btn-collaborate');
+        const sendButton = document.querySelector('.btn-send');
 
-        // Ensure button is clickable
-        if (!toggleConsoleButton) {
-            console.error('Console button not found');
-            terminal.textContent = 'Error: Console button not found';
+        if (!toggleConsoleButton || !runButton || !collaborateButton || !sendButton || !languageSelect) {
+            console.error('Button or select element not found');
+            terminal.textContent = 'Error: Button or select element not found';
             terminal.classList.add('visible');
             terminal.classList.remove('hidden');
         }
 
+        navItems.forEach(item => {
+            const handleNavClick = (event) => {
+                event.preventDefault();
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                item.blur();
+                terminal.textContent = `Navigated to ${item.dataset.nav}`;
+                terminal.classList.add('visible');
+                terminal.classList.remove('hidden');
+                console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}`);
+            };
+            item.addEventListener('click', handleNavClick);
+            item.addEventListener('touchstart', handleNavClick);
+        });
+
+        languageSelect.addEventListener('change', () => {
+            languageSelect.classList.add('active');
+            languageSelect.blur();
+            setTimeout(() => languageSelect.classList.remove('active'), 300);
+            console.log('Select changed, active: true');
+            window.changeLanguage();
+        });
+        languageSelect.addEventListener('touchstart', (event) => {
+            event.preventDefault();
+            languageSelect.classList.add('active');
+            languageSelect.blur();
+            setTimeout(() => languageSelect.classList.remove('active'), 300);
+            console.log('Select touched, active: true');
+        });
+
         window.changeLanguage = () => {
             const language = document.getElementById('language').value;
             monaco.editor.setModelLanguage(editor.getModel(), language);
+            terminal.textContent = `Language changed to ${language}`;
+            terminal.classList.add('visible');
+            terminal.classList.remove('hidden');
         };
 
         window.runCode = async () => {
             const code = editor.getValue();
             const language = document.getElementById('language').value;
+            runButton.classList.add('active');
+            runButton.blur();
+            setTimeout(() => runButton.classList.remove('active'), 300);
+            console.log('Run clicked, active: true');
             try {
                 if (language === 'html') {
                     preview.contentDocument.open();
@@ -65,6 +106,10 @@ require(['vs/editor/editor.main'], () => {
             userMessage.className = 'message user-message';
             userMessage.textContent = prompt;
             chatHistory.appendChild(userMessage);
+            sendButton.classList.add('active');
+            sendButton.blur();
+            setTimeout(() => sendButton.classList.remove('active'), 300);
+            console.log('Send clicked, active: true');
             try {
                 const response = await fetch('/ai/complete', {
                     method: 'POST',
@@ -91,59 +136,81 @@ require(['vs/editor/editor.main'], () => {
         };
 
         window.startCollaboration = () => {
+            collaborateButton.classList.add('active');
+            collaborateButton.blur();
+            setTimeout(() => collaborateButton.classList.remove('active'), 300);
+            console.log('Collaborate clicked, active: true');
             terminal.textContent = 'Collaboration not available on iPad...';
             terminal.classList.add('visible');
             terminal.classList.remove('hidden');
         };
 
         window.toggleConsole = () => {
-            // Ensure button remains clickable
             toggleConsoleButton.style.pointerEvents = 'auto';
-            
             if (editorElement.classList.contains('visible')) {
-                // Hide editor: slide down
                 editorElement.classList.remove('visible');
                 editorElement.classList.add('hidden');
-                // Delay display:none to allow slide-down animation to complete
+                toggleConsoleButton.classList.remove('active');
+                toggleConsoleButton.blur();
                 setTimeout(() => {
                     if (editorElement.classList.contains('hidden')) {
                         editorElement.style.display = 'none';
                     }
-                }, 700); // Match animation duration
+                }, 700);
                 terminal.classList.remove('visible');
                 terminal.classList.add('hidden');
             } else {
-                // Show editor: slide up
                 editorElement.style.display = 'block';
-                // Force reflow to ensure animation restarts
                 void editorElement.offsetWidth;
                 editorElement.classList.remove('hidden');
                 editorElement.classList.add('visible');
+                toggleConsoleButton.classList.add('active');
+                toggleConsoleButton.blur();
             }
+            console.log(`Console toggled, active: ${toggleConsoleButton.classList.contains('active')}`);
         };
 
-        // Add click event listener for Console button
-        toggleConsoleButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            window.toggleConsole();
-        });
+        const addButtonListeners = (button, handler, isToggle = false) => {
+            const handleEvent = (event) => {
+                event.preventDefault();
+                if (isToggle && button.classList.contains('active')) {
+                    button.classList.remove('active');
+                } else {
+                    button.classList.add('active');
+                }
+                button.blur();
+                handler();
+                if (!isToggle) {
+                    setTimeout(() => button.classList.remove('active'), 300);
+                }
+                console.log(`${button.textContent || 'Select'} ${isToggle ? 'toggled' : 'clicked'}, active: ${button.classList.contains('active')}`);
+            };
+            button.addEventListener('click', handleEvent);
+            button.addEventListener('touchstart', handleEvent);
+        };
 
-        // Add Enter key listener for AI prompt
+        addButtonListeners(toggleConsoleButton, window.toggleConsole, true);
+        addButtonListeners(runButton, window.runCode);
+        addButtonListeners(collaborateButton, window.startCollaboration);
+        addButtonListeners(sendButton, window.requestAI);
+
         const aiPrompt = document.getElementById('ai-prompt');
         aiPrompt.addEventListener('keydown', (event) => {
             if (event.key === 'Enter' && !event.shiftKey) {
                 event.preventDefault();
+                sendButton.classList.add('active');
+                sendButton.blur();
+                setTimeout(() => sendButton.classList.remove('active'), 300);
+                console.log('Enter pressed, Send active: true');
                 window.requestAI();
             }
         });
     } catch (error) {
-        const terminal = document.getElementById('terminal');
         terminal.textContent = 'Editor error: ' + error.message;
         terminal.classList.add('visible');
         terminal.classList.remove('hidden');
     }
 }, (err) => {
-    const terminal = document.getElementById('terminal');
     terminal.textContent = 'Failed to load Monaco: ' + err.message;
     terminal.classList.add('visible');
     terminal.classList.remove('hidden');
