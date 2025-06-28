@@ -14,8 +14,16 @@ require(['vs/editor/editor.main'], () => {
         const preview = document.getElementById('preview');
         const previewPlaceholder = document.getElementById('preview-placeholder');
         const terminal = document.getElementById('terminal');
-        const previewContainer = document.querySelector('.preview-container');
         const editorElement = document.getElementById('editor');
+        const toggleConsoleButton = document.querySelector('.btn-toggle-console');
+
+        // Ensure button is clickable
+        if (!toggleConsoleButton) {
+            console.error('Console button not found');
+            terminal.textContent = 'Error: Console button not found';
+            terminal.classList.add('visible');
+            terminal.classList.remove('hidden');
+        }
 
         window.changeLanguage = () => {
             const language = document.getElementById('language').value;
@@ -88,15 +96,37 @@ require(['vs/editor/editor.main'], () => {
             terminal.classList.remove('hidden');
         };
 
-        window.toggleTerminal = () => {
-            editorElement.classList.toggle('visible');
-            editorElement.classList.toggle('hidden');
-            previewContainer.classList.toggle('editor-visible');
-            if (!editorElement.classList.contains('visible')) {
+        window.toggleConsole = () => {
+            // Ensure button remains clickable
+            toggleConsoleButton.style.pointerEvents = 'auto';
+            
+            if (editorElement.classList.contains('visible')) {
+                // Hide editor: slide down
+                editorElement.classList.remove('visible');
+                editorElement.classList.add('hidden');
+                // Delay display:none to allow slide-down animation to complete
+                setTimeout(() => {
+                    if (editorElement.classList.contains('hidden')) {
+                        editorElement.style.display = 'none';
+                    }
+                }, 700); // Match animation duration
                 terminal.classList.remove('visible');
                 terminal.classList.add('hidden');
+            } else {
+                // Show editor: slide up
+                editorElement.style.display = 'block';
+                // Force reflow to ensure animation restarts
+                void editorElement.offsetWidth;
+                editorElement.classList.remove('hidden');
+                editorElement.classList.add('visible');
             }
         };
+
+        // Add click event listener for Console button
+        toggleConsoleButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.toggleConsole();
+        });
 
         // Add Enter key listener for AI prompt
         const aiPrompt = document.getElementById('ai-prompt');
@@ -111,12 +141,10 @@ require(['vs/editor/editor.main'], () => {
         terminal.textContent = 'Editor error: ' + error.message;
         terminal.classList.add('visible');
         terminal.classList.remove('hidden');
-        document.querySelector('.preview-container').classList.add('editor-visible');
     }
 }, (err) => {
     const terminal = document.getElementById('terminal');
     terminal.textContent = 'Failed to load Monaco: ' + err.message;
     terminal.classList.add('visible');
     terminal.classList.remove('hidden');
-    document.querySelector('.preview-container').classList.add('editor-visible');
 });
