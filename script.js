@@ -15,6 +15,7 @@ require(['vs/editor/editor.main'], () => {
         const previewPlaceholder = document.getElementById('preview-placeholder');
         const terminal = document.getElementById('terminal');
         const previewContainer = document.querySelector('.preview-container');
+        const editorElement = document.getElementById('editor');
 
         window.changeLanguage = () => {
             const language = document.getElementById('language').value;
@@ -42,12 +43,10 @@ require(['vs/editor/editor.main'], () => {
                 }
                 terminal.classList.add('visible');
                 terminal.classList.remove('hidden');
-                previewContainer.classList.add('terminal-visible');
             } catch (error) {
                 terminal.textContent = 'Backend not available on iPad...';
                 terminal.classList.add('visible');
                 terminal.classList.remove('hidden');
-                previewContainer.classList.add('terminal-visible');
             }
         };
 
@@ -81,20 +80,22 @@ require(['vs/editor/editor.main'], () => {
             document.getElementById('ai-prompt').value = '';
             terminal.classList.add('visible');
             terminal.classList.remove('hidden');
-            previewContainer.classList.add('terminal-visible');
         };
 
         window.startCollaboration = () => {
             terminal.textContent = 'Collaboration not available on iPad...';
             terminal.classList.add('visible');
             terminal.classList.remove('hidden');
-            previewContainer.classList.add('terminal-visible');
         };
 
         window.toggleTerminal = () => {
-            terminal.classList.toggle('visible');
-            terminal.classList.toggle('hidden');
-            previewContainer.classList.toggle('terminal-visible');
+            editorElement.classList.toggle('visible');
+            editorElement.classList.toggle('hidden');
+            previewContainer.classList.toggle('editor-visible');
+            if (!editorElement.classList.contains('visible')) {
+                terminal.classList.remove('visible');
+                terminal.classList.add('hidden');
+            }
         };
 
         // Add Enter key listener for AI prompt
@@ -106,15 +107,16 @@ require(['vs/editor/editor.main'], () => {
             }
         });
     } catch (error) {
+        const terminal = document.getElementById('terminal');
         terminal.textContent = 'Editor error: ' + error.message;
         terminal.classList.add('visible');
         terminal.classList.remove('hidden');
-        document.querySelector('.preview-container').classList.add('terminal-visible');
+        document.querySelector('.preview-container').classList.add('editor-visible');
     }
 }, (err) => {
     const terminal = document.getElementById('terminal');
     terminal.textContent = 'Failed to load Monaco: ' + err.message;
     terminal.classList.add('visible');
     terminal.classList.remove('hidden');
-    document.querySelector('.preview-container').classList.add('terminal-visible');
+    document.querySelector('.preview-container').classList.add('editor-visible');
 });

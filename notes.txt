@@ -55,3 +55,20 @@ REPLICAT Frontend Update (June 27, 2025, 7:43 PM):
   - Note if Monaco editor is blank (CDN issue).
   - Test on PC: Pull from GitHub, npm start, confirm Monaco, preview, fix Ollama 403.
   - Commit: “Modernized UI with floating cards, animations”.
+  
+  REPLICAT Frontend Update (June 27, 2025, 8:04 PM):
+- Checkpoint: Working files from 11:03 PM, June 26, 2025.
+- Fixed: Hid Monaco Editor, toggled with “Editor” button below preview, terminal for output.
+- Design: Gradient background (#121212), neon yellow (#ffd700), teal (#00b7eb), Inter font, floating cards.
+- Layout: Chat card (left), preview card (center, large), editor hidden below preview.
+- Features:
+  - Chat with fade-in messages, gradient send button.
+  - Preview with placeholder, shifts up when editor visible.
+  - Editor slides down/up with “Editor” pill toggle.
+  - Terminal slides for output (Run, AI, Collaborate).
+- Fallback: 1-1-1 layout (chat left, preview center, editor right).
+- To-do:
+  - Test in Working Copy: Verify editor hidden, toggle with “Editor” button, preview centered.
+  - Note if Monaco editor fails (CDN issue).
+  - Test on PC: Pull from GitHub, npm start, confirm Monaco, preview, fix Ollama 403.
+  - Commit: “Hid editor, fixed terminal toggle below preview”.
