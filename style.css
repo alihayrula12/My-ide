@@ -36,7 +36,7 @@ h1 {
 .logo {
     font-size: 32px;
     margin-right: 8px;
-    color: #C252E1; /* Medium Orchid */
+    color: rgb(194, 82, 225); /* Medium Orchid */
 }
 
 .toolbar {
@@ -57,7 +57,7 @@ h1 {
 .card {
     background: #1c1c1c;
     border-radius: 12px;
-    border: 1px solid #6ECBFS; /* Light Sky Blue */
+    border: 1px solid rgb(110, 203, 251); /* Light Sky Blue */
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
 }
@@ -95,14 +95,14 @@ h1 {
 .chat-history .user-message {
     background: #2a2a2a;
     color: #E0D9F6;
-    border: 1px solid #C252E1;
+    border: 1px solid rgb(194, 82, 225);
     margin-left: 12px;
 }
 
 .chat-history .ai-message {
     background: #1a1a1a;
-    color: #6ECBFS;
-    border: 1px solid #6ECBFS;
+    color: rgb(110, 203, 251);
+    border: 1px solid rgb(110, 203, 251);
     margin-right: 12px;
 }
 
@@ -127,7 +127,7 @@ textarea {
 
 textarea:focus {
     outline: none;
-    border-color: #C252E1;
+    border-color: rgb(194, 82, 225);
 }
 
 .btn {
@@ -135,8 +135,8 @@ textarea:focus {
     font-size: 14px;
     font-weight: 600;
     background: transparent !important;
-    color: #C252E1 !important;
-    border: 1px solid #C252E1 !important;
+    color: rgb(194, 82, 225) !important;
+    border: 1px solid rgb(194, 82, 225) !important;
     border-radius: 20px;
     cursor: pointer;
     text-align: center;
@@ -149,18 +149,24 @@ textarea:focus {
     z-index: 5;
 }
 
+.btn:not(:hover):not(.active) {
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: scale(1) !important;
+}
+
 .btn:hover:not(.active) {
     background: #2a2a2a !important;
     box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
     transform: scale(1.05);
 }
 
-.btn.active, .btn-select:focus, .btn-select.active, .nav-item.active {
-    background: linear-gradient(45deg, #ffd700, #00b7eb) !important;
-    background-color: #ffd700 !important;
-    color: #121212 !important;
-    border: 1px solid #ffd700 !important;
-    box-shadow: 0 0 12px rgba(0, 183, 235, 0.4) !important;
+.btn.active {
+    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
+    background-color: rgb(110, 203, 251) !important;
+    color: #E0D9F6 !important;
+    border: 1px solid rgb(194, 82, 225) !important;
+    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
 }
 
 .btn-send {
@@ -179,6 +185,12 @@ textarea:focus {
     background-position: right 10px center;
 }
 
+.btn-select:not(:hover):not(.active) {
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: scale(1) !important;
+}
+
 .btn-select:hover:not(.active) {
     background: #2a2a2a !important;
     box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
@@ -186,15 +198,21 @@ textarea:focus {
 }
 
 .btn-select:focus, .btn-select.active {
-    background: linear-gradient(45deg, #6ECBFS, #C252E1) !important;
-    background-color: #6ECBFS !important;
+    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
+    background-color: rgb(110, 203, 251) !important;
     color: #E0D9F6 !important;
-    border: 1px solid #C252E1 !important;
+    border: 1px solid rgb(194, 82, 225) !important;
     box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
 }
 
 .nav-item {
     opacity: 0.7;
+}
+
+.nav-item:not(:hover):not(.active) {
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: scale(1) !important;
 }
 
 .nav-item:hover:not(.active) {
@@ -205,10 +223,10 @@ textarea:focus {
 }
 
 .nav-item.active {
-    background: linear-gradient(45deg, #6ECBFS, #C252E1) !important;
-    background-color: #6ECBFS !important;
+    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
+    background-color: rgb(110, 203, 251) !important;
     color: #E0D9F6 !important;
-    border: 1px solid #C252E1 !important;
+    border: 1px solid rgb(194, 82, 225) !important;
     box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
     opacity: 1;
 }
@@ -242,7 +260,15 @@ textarea:focus {
     opacity: 1;
     transform: translateY(0);
     min-height: 500px;
-    border: 1px solid #6ECBFS;
+    border: 1px solid rgb(110, 203, 251) !important; /* Light Sky Blue */
+    border-radius: 12px !important;
+    box-shadow: 0 0 8px rgba(110, 203, 251, 0.3) !important;
+}
+
+.editor.visible .monaco-editor,
+.editor.visible .monaco-editor-background,
+.editor.visible .overflow-guard {
+    border-radius: 12px !important; /* Match preview window */
 }
 
 .editor.hidden {
@@ -260,6 +286,15 @@ textarea:focus {
     flex-direction: column;
     gap: 12px;
     z-index: 1;
+    background: #1c1c1c; /* Match .card background */
+    border: none !important; /* Remove border */
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.preview-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .preview {
@@ -267,7 +302,7 @@ textarea:focus {
     min-height: 500px;
     border-radius: 12px;
     background: #141414;
-    border: 1px solid #6ECBFS;
+    border: 1px solid rgb(110, 203, 251); /* Keep border on iframe */
 }
 
 .preview-placeholder {
@@ -295,7 +330,7 @@ textarea:focus {
     background: #141414;
     color: #E0D9F6;
     border-radius: 12px;
-    border: 1px solid #C252E1;
+    border: 1px solid rgb(194, 82, 225);
     min-height: 0;
     max-height: 200px;
     white-space: pre-wrap;
