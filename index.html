@@ -1,45 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>REPLICAT</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/monaco-editor@0.34.0/min/vs/editor/editor.main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REPLICAT 🧶💻</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://unpkg.com/monaco-editor@0.34.0/min/vs/editor/editor.main.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1><span class="logo">🧶💻</span> REPLICAT</h1>
-    </header>
-    <div class="toolbar">
-      <select id="language" onchange="changeLanguage()">
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-        <option value="html">HTML</option>
-      </select>
-      <button class="btn btn-run" onclick="runCode()">Run Code</button>
-      <button class="btn btn-collaborate" onclick="startCollaboration()">Collaborate</button>
-      <button class="btn btn-toggle-console" onclick="toggleConsole()">Toggle Console</button>
-    </div>
-    <div class="main-content">
-      <div class="ai-section">
-        <div class="ai-output">AI Responses...</div>
-        <div class="ai-prompt-container">
-          <textarea id="ai-prompt" placeholder="Ask the AI, e.g., 'Complete this function'"></textarea>
-          <button class="btn btn-send" onclick="requestAI()">↑</button>
+    <div class="container">
+        <header>
+            <h1><span class="logo">🧶💻</span> REPLICAT</h1>
+        </header>
+        <div class="toolbar">
+            <select id="language" title="Select Language">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="html">HTML</option>
+            </select>
+            <button class="btn btn-run" title="Execute Code">Run</button>
+            <button class="btn btn-collaborate" title="Collaborate">Collaborate</button>
         </div>
-      </div>
-      <div class="editor-container">
-        <div id="editor" style="height: 500px; width: 100%; border: 1px solid #444;"></div>
-        <pre id="output" class="console">Code Output...</pre>
-      </div>
+        <div class="main-content">
+            <div id="chat-container" class="chat-container card">
+                <div class="chat-history"></div>
+                <div class="chat-input">
+                    <textarea id="ai-prompt" placeholder="Ask AI (e.g., 'Explain this code')"></textarea>
+                    <button class="btn btn-send" title="Send to AI">➤</button>
+                </div>
+            </div>
+            <div class="editor-preview">
+                <div id="editor" class="card"></div>
+                <div class="preview-container card">
+                    <iframe id="preview" class="preview" sandbox="allow-same-origin"></iframe>
+                    <div id="preview-placeholder" class="preview-placeholder">Preview will be generated here</div>
+                    <button class="btn btn-toggle-terminal" title="Show/Hide Terminal">Terminal</button>
+                    <pre id="terminal" class="terminal hidden">Terminal Output...</pre>
+                </div>
+            </div>
+        </div>
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item">Projects</a>
+            <a href="#" class="nav-item">Create</a>
+            <a href="#" class="nav-item">Profile Settings</a>
+        </nav>
     </div>
-    <nav class="bottom-nav">
-      <a href="#" class="nav-item">Projects</a>
-      <a href="#" class="nav-item">Create</a>
-      <a href="#" class="nav-item">Profile Settings</a>
-    </nav>
-  </div>
-  <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
-  <script src="script.js"></script>
+    <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
