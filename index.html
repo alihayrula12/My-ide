@@ -3,50 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPLICAT 🧶💻</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://unpkg.com/monaco-editor@0.34.0/min/vs/editor/editor.main.css">
+    <title>REPLICAT</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
 </head>
-<body>
+<body class="dark">
     <div class="container">
         <header>
-            <h1><span class="logo">🧶💻</span> REPLICAT</h1>
+            <h1><span class="logo">⚙️</span>REPLICAT</h1>
         </header>
-        <div class="toolbar">
-            <select id="language" class="btn btn-select" title="Select Language">
-                <option value="javascript">JavaScript</option>
-                <option value="python">Python</option>
-                <option value="html">HTML</option>
-            </select>
-            <button class="btn btn-run" title="Execute Code">Run</button>
-            <button class="btn btn-collaborate" title="Collaborate">Collaborate</button>
-        </div>
         <div class="main-content">
-            <div id="chat-container" class="chat-container card">
-                <div class="chat-history"></div>
+            <div class="card chat-container" role="region" aria-label="Chat with AI">
+                <div class="chat-history" role="log" aria-live="polite"></div>
                 <div class="chat-input">
-                    <textarea id="ai-prompt" placeholder="Ask AI (e.g., 'Explain this code')"></textarea>
-                    <button class="btn btn-send" title="Send to AI">➤</button>
+                    <textarea id="ai-prompt" placeholder="Ask AI about your code..." aria-label="AI prompt input"></textarea>
+                    <button class="btn btn-send" aria-label="Send AI prompt">➤</button>
                 </div>
             </div>
-            <div class="editor-preview">
-                <div class="preview-container card">
-                    <iframe id="preview" class="preview" sandbox="allow-same-origin"></iframe>
-                    <div id="preview-placeholder" class="preview-placeholder">Preview will be generated here</div>
+            <div class="card editor-preview" role="region" aria-label="Code editor and preview">
+                <div class="preview-container">
                     <div id="editor" class="editor hidden"></div>
-                    <button class="btn btn-toggle-console" title="Show/Hide Console">Console</button>
-                    <pre id="terminal" class="terminal hidden">Terminal Output...</pre>
+                    <iframe id="preview" class="preview"></iframe>
+                    <div id="preview-placeholder" class="preview-placeholder">Run code to see the output here!</div>
+                </div>
+                <div class="editor-controls">
+                    <div id="terminal" class="terminal hidden"></div>
+                    <div class="button-bar">
+                        <button class="btn btn-run" aria-label="Run code">Run</button>
+                        <button class="btn btn-collaborate" aria-label="Start collaboration">Collaborate</button>
+                        <select id="language" class="btn btn-select" aria-label="Select programming language">
+                            <option value="javascript">JavaScript</option>
+                            <option value="html">HTML</option>
+                            <option value="python">Python</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-toggle-console" aria-label="Toggle console">Console</button>
                 </div>
             </div>
         </div>
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item btn" data-nav="projects">Projects</a>
-            <a href="#" class="nav-item btn" data-nav="create">Create</a>
-            <a href="#" class="nav-item btn" data-nav="profile">Profile Settings</a>
-        </nav>
+        <div class="bottom-nav" role="navigation" aria-label="Main navigation">
+            <a href="#" class="btn nav-item" data-nav="projects" aria-label="View projects">Projects</a>
+            <a href="#" class="btn nav-item" data-nav="create" aria-label="Create new project">Create</a>
+            <a href="#" class="btn nav-item" data-nav="profile" aria-label="View profile">Profile</a>
+            <a href="#" class="btn nav-item" data-nav="settings" aria-label="View settings">Settings</a>
+            <button class="btn nav-item theme-toggle" aria-label="Toggle theme" data-theme="dark">Theme</button>
+        </div>
     </div>
-    <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

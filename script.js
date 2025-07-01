@@ -21,23 +21,68 @@ require(['vs/editor/editor.main'], () => {
         const runButton = document.querySelector('.btn-run');
         const collaborateButton = document.querySelector('.btn-collaborate');
         const sendButton = document.querySelector('.btn-send');
+        const themeToggle = document.querySelector('.theme-toggle');
 
-        if (!toggleConsoleButton || !runButton || !collaborateButton || !sendButton || !languageSelect) {
+        // Debug logs
+        const logToTerminal = (message) => {
+            if (toggleConsoleButton.classList.contains('active')) {
+                terminal.textContent = message;
+                terminal.classList.add('visible');
+                terminal.classList.remove('hidden');
+            }
+            console.log(message);
+        };
+
+        console.log('script.js loaded');
+        console.log('Terminal element:', terminal);
+        console.log('Buttons:', document.querySelectorAll('.btn').length);
+
+        if (!terminal) {
+            console.error('Terminal element not found');
+            return;
+        }
+
+        if (!toggleConsoleButton || !runButton || !collaborateButton || !sendButton || !languageSelect || !themeToggle) {
             console.error('Button or select element not found');
             terminal.textContent = 'Error: Button or select element not found';
             terminal.classList.add('visible');
             terminal.classList.remove('hidden');
+            return;
         }
 
+        // Debug mouse events
+        document.addEventListener('mousemove', (e) => {
+            const isOverPreview = e.target.closest('.preview-container');
+            console.log('Mouse move:', {
+                x: e.clientX,
+                y: e.clientY,
+                overPreview: !!isOverPreview,
+                editorVisible: editorElement.classList.contains('visible'),
+                editorOpacity: getComputedStyle(editorElement).opacity
+            });
+        });
+
+        editorElement.addEventListener('mouseenter', () => {
+            console.log('Mouse entered editor');
+        });
+
+        editorElement.addEventListener('mouseleave', () => {
+            console.log('Mouse left editor');
+        });
+
         navItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                console.log(`Hover start on nav-item: ${item.dataset.nav}`);
+            });
+            item.addEventListener('mouseleave', () => {
+                console.log(`Hover end on nav-item: ${item.dataset.nav}`);
+            });
             const handleNavClick = (event) => {
                 event.preventDefault();
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
                 item.blur();
-                terminal.textContent = `Navigated to ${item.dataset.nav}`;
-                terminal.classList.add('visible');
-                terminal.classList.remove('hidden');
+                logToTerminal(`Navigated to ${item.dataset.nav}`);
                 console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}`);
             };
             item.addEventListener('click', handleNavClick);
@@ -51,6 +96,7 @@ require(['vs/editor/editor.main'], () => {
             console.log('Select changed, active: true');
             window.changeLanguage();
         });
+
         languageSelect.addEventListener('touchstart', (event) => {
             event.preventDefault();
             languageSelect.classList.add('active');
@@ -62,25 +108,22 @@ require(['vs/editor/editor.main'], () => {
         window.changeLanguage = () => {
             const language = document.getElementById('language').value;
             monaco.editor.setModelLanguage(editor.getModel(), language);
-            terminal.textContent = `Language changed to ${language}`;
-            terminal.classList.add('visible');
-            terminal.classList.remove('hidden');
+            logToTerminal(`Language changed to ${language}`);
         };
 
         window.runCode = async () => {
             const code = editor.getValue();
             const language = document.getElementById('language').value;
-            runButton.classList.add('active');
+            runButton.classList.add('active', 'loading');
+            runButton.disabled = true;
             runButton.blur();
-            setTimeout(() => runButton.classList.remove('active'), 300);
-            console.log('Run clicked, active: true');
             try {
                 if (language === 'html') {
                     preview.contentDocument.open();
                     preview.contentDocument.write(code);
                     preview.contentDocument.close();
                     previewPlaceholder.classList.add('hidden');
-                    terminal.textContent = 'Preview updated';
+                    logToTerminal('Preview updated');
                 } else {
                     const response = await fetch('/run', {
                         method: 'POST',
@@ -88,51 +131,97 @@ require(['vs/editor/editor.main'], () => {
                         body: JSON.stringify({ code, language })
                     });
                     const result = await response.json();
-                    terminal.textContent = result.output || 'Error running code';
+                    logToTerminal(result.output || 'Error running code');
                 }
-                terminal.classList.add('visible');
-                terminal.classList.remove('hidden');
             } catch (error) {
-                terminal.textContent = 'Backend not available on iPad...';
-                terminal.classList.add('visible');
-                terminal.classList.remove('hidden');
+                logToTerminal('Backend not available on iPad...');
+            } finally {
+                runButton.classList.remove('active', 'loading');
+                runButton.disabled = false;
             }
         };
 
         window.requestAI = async () => {
             const prompt = document.getElementById('ai-prompt').value;
             const code = editor.getValue();
+            const chatHistory = document.querySelector('.chat-history');
             const userMessage = document.createElement('div');
             userMessage.className = 'message user-message';
             userMessage.textContent = prompt;
             chatHistory.appendChild(userMessage);
+
+            const existingIndicator = chatHistory.querySelector('.typing-indicator');
+            if (existingIndicator) existingIndicator.remove();
+
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span> <span>replicat’s thinking</span>';
+            chatHistory.appendChild(typingIndicator);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+
             sendButton.classList.add('active');
             sendButton.blur();
             setTimeout(() => sendButton.classList.remove('active'), 300);
             console.log('Send clicked, active: true');
+
             try {
                 const response = await fetch('/ai/complete', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt, code })
                 });
-                const result = await response.json();
+
+                typingIndicator.remove();
                 const aiMessage = document.createElement('div');
                 aiMessage.className = 'message ai-message';
-                aiMessage.textContent = result.completion || 'AI error';
                 chatHistory.appendChild(aiMessage);
-                terminal.textContent = 'AI response added to chat';
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let done = false;
+                let fullResponse = '';
+
+                while (!done) {
+                    const { value, done: streamDone } = await reader.read();
+                    done = streamDone;
+                    if (value) {
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n\n');
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const data = JSON.parse(line.slice(6));
+                                if (data.completion) {
+                                    aiMessage.textContent += data.completion;
+                                    fullResponse += data.completion;
+                                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (fullResponse.includes('```')) {
+                    const copyButton = document.createElement('button');
+                    copyButton.className = 'btn btn-copy-code';
+                    copyButton.textContent = 'Copy to Editor';
+                    copyButton.onclick = () => {
+                        const codeMatch = fullResponse.match(/```[\s\S]*?```/g)?.[0]?.replace(/```/g, '') || '';
+                        editor.setValue(codeMatch);
+                        logToTerminal('Code copied to editor');
+                    };
+                    aiMessage.appendChild(copyButton);
+                }
+                logToTerminal('AI response added to chat');
             } catch (error) {
+                typingIndicator.remove();
                 const aiMessage = document.createElement('div');
                 aiMessage.className = 'message ai-message';
                 aiMessage.textContent = 'AI not available on iPad...';
                 chatHistory.appendChild(aiMessage);
-                terminal.textContent = 'AI not available on iPad...';
+                logToTerminal('AI not available on iPad...');
             }
             chatHistory.scrollTop = chatHistory.scrollHeight;
-            document.getElementById('ai-prompt').value = '';
-            terminal.classList.add('visible');
-            terminal.classList.remove('hidden');
+            document.getElementById('ai-prompt').value = ''; // Clear prompt
         };
 
         window.startCollaboration = () => {
@@ -140,9 +229,7 @@ require(['vs/editor/editor.main'], () => {
             collaborateButton.blur();
             setTimeout(() => collaborateButton.classList.remove('active'), 300);
             console.log('Collaborate clicked, active: true');
-            terminal.textContent = 'Collaboration not available on iPad...';
-            terminal.classList.add('visible');
-            terminal.classList.remove('hidden');
+            logToTerminal('Collaboration not available on iPad...');
         };
 
         window.toggleConsole = () => {
@@ -150,25 +237,41 @@ require(['vs/editor/editor.main'], () => {
             if (editorElement.classList.contains('visible')) {
                 editorElement.classList.remove('visible');
                 editorElement.classList.add('hidden');
+                preview.classList.remove('hidden');
+                previewPlaceholder.classList.remove('hidden');
+                terminal.classList.remove('visible');
+                terminal.classList.add('hidden');
                 toggleConsoleButton.classList.remove('active');
                 toggleConsoleButton.blur();
                 setTimeout(() => {
                     if (editorElement.classList.contains('hidden')) {
                         editorElement.style.display = 'none';
+                        editor.layout();
                     }
-                }, 700);
-                terminal.classList.remove('visible');
-                terminal.classList.add('hidden');
+                }, 500);
             } else {
                 editorElement.style.display = 'block';
                 void editorElement.offsetWidth;
                 editorElement.classList.remove('hidden');
                 editorElement.classList.add('visible');
+                preview.classList.add('hidden');
+                previewPlaceholder.classList.add('hidden');
+                terminal.classList.add('visible');
+                terminal.classList.remove('hidden');
                 toggleConsoleButton.classList.add('active');
                 toggleConsoleButton.blur();
+                editor.layout();
             }
             console.log(`Console toggled, active: ${toggleConsoleButton.classList.contains('active')}`);
         };
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.classList.contains('light') ? 'dark' : 'light';
+            document.body.classList.toggle('light');
+            themeToggle.setAttribute('data-theme', currentTheme);
+            editor.setTheme(currentTheme === 'light' ? 'vs' : 'vs-dark');
+            logToTerminal(`Switched to ${currentTheme} theme`);
+        });
 
         const addButtonListeners = (button, handler, isToggle = false) => {
             const handleEvent = (event) => {
@@ -206,12 +309,20 @@ require(['vs/editor/editor.main'], () => {
             }
         });
     } catch (error) {
-        terminal.textContent = 'Editor error: ' + error.message;
+        console.error('Editor error:', error);
+        const terminal = document.getElementById('terminal');
+        if (terminal) {
+            terminal.textContent = 'Editor error: ' + error.message;
+            terminal.classList.add('visible');
+            terminal.classList.remove('hidden');
+        }
+    }
+}, (err) => {
+    console.error('Monaco load error:', err);
+    const terminal = document.getElementById('terminal');
+    if (terminal) {
+        terminal.textContent = 'Failed to load Monaco: ' + err.message;
         terminal.classList.add('visible');
         terminal.classList.remove('hidden');
     }
-}, (err) => {
-    terminal.textContent = 'Failed to load Monaco: ' + err.message;
-    terminal.classList.add('visible');
-    terminal.classList.remove('hidden');
 });
