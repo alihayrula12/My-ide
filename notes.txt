@@ -146,3 +146,15 @@ REPLICAT Frontend Update (June 27, 2025, 7:43 PM):
   - Note if Monaco editor fails (CDN issue).
   - Test on PC: Pull from GitHub, npm start, confirm Monaco, preview, fix Ollama 403.
   - Commit: “Rounded Monaco Editor corners, fixed teal border to encompass corners”.
+  
+  
+  REPLICAT Frontend Update (July 1, 2025, 4:20 PM):
+- Frontend: Fixed editor-preview/chat-container height at 692px, dynamic preview-container (632px/452px), no console elongation. Added Run button loading spinner, ARIA attributes, code snippet copy button, mobile responsiveness (<768px), iOS-style theme toggle (top-right, light sky blue moon SVG for dark mode, magenta sun SVG for light mode, gray #333 slider circle in dark mode, white #FFFFFF in light mode, centered sun SVG), fixed AI prompt textarea clearing, adjusted light mode preview text to #333. Repositioned Console button to align vertically with Send button (~52px from bottom), centered horizontally in editor-controls, with 28px bottom spacing matching chat-container. Chat UI with three-dot typing indicator, streaming AI, 320px bubbles, vertical scroll. Run/Collaborate/Language buttons below terminal with fade animation. Terminal below editor with fade/slide, debug logs hidden unless console toggled.
+- Backend: server.js with /run (JavaScript via vm2, Python via spawn, HTML client-side), /ai/complete (Ollama/Gemma7b, streaming enabled). Added winston logging, express-rate-limit, Python support.
+- Fixed: Frontend height issues, console positioning, button-bar/terminal animations, debug logs, syntax errors, nav hover flicker, AI prompt clear, light mode preview text, theme toggle icons, sun SVG alignment, Console button alignment.
+- Git: Committed frontend enhancements.
+- To-do:
+  - Test Console button alignment (vertical with Send, horizontal center, 28px bottom), theme toggle, preview text, existing features.
+  - Test backend Python /run, streaming /ai/complete (tonight on PC).
+  - Deploy to Render/Vercel.
+  - Integrate xAI API (https://x.ai/api).

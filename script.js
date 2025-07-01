@@ -16,12 +16,13 @@ require(['vs/editor/editor.main'], () => {
         const terminal = document.getElementById('terminal');
         const editorElement = document.getElementById('editor');
         const toggleConsoleButton = document.querySelector('.btn-toggle-console');
+        const buttonBar = document.querySelector('.button-bar');
         const navItems = document.querySelectorAll('.nav-item');
         const languageSelect = document.getElementById('language');
         const runButton = document.querySelector('.btn-run');
         const collaborateButton = document.querySelector('.btn-collaborate');
         const sendButton = document.querySelector('.btn-send');
-        const themeToggle = document.querySelector('.theme-toggle');
+        const themeCheckbox = document.querySelector('.theme-checkbox');
 
         // Debug logs
         const logToTerminal = (message) => {
@@ -42,9 +43,9 @@ require(['vs/editor/editor.main'], () => {
             return;
         }
 
-        if (!toggleConsoleButton || !runButton || !collaborateButton || !sendButton || !languageSelect || !themeToggle) {
-            console.error('Button or select element not found');
-            terminal.textContent = 'Error: Button or select element not found';
+        if (!toggleConsoleButton || !buttonBar || !runButton || !collaborateButton || !sendButton || !languageSelect || !themeCheckbox) {
+            console.error('Button, button-bar, or select element not found');
+            terminal.textContent = 'Error: Button, button-bar, or select element not found';
             terminal.classList.add('visible');
             terminal.classList.remove('hidden');
             return;
@@ -235,42 +236,53 @@ require(['vs/editor/editor.main'], () => {
         window.toggleConsole = () => {
             toggleConsoleButton.style.pointerEvents = 'auto';
             if (editorElement.classList.contains('visible')) {
+                // Toggling OFF
                 editorElement.classList.remove('visible');
                 editorElement.classList.add('hidden');
                 preview.classList.remove('hidden');
                 previewPlaceholder.classList.remove('hidden');
                 terminal.classList.remove('visible');
                 terminal.classList.add('hidden');
+                terminal.style.display = 'none'; // Hide instantly
                 toggleConsoleButton.classList.remove('active');
                 toggleConsoleButton.blur();
+                buttonBar.classList.add('hidden'); // Reset opacity
                 setTimeout(() => {
                     if (editorElement.classList.contains('hidden')) {
                         editorElement.style.display = 'none';
+                        buttonBar.style.display = 'none';
                         editor.layout();
                     }
-                }, 500);
+                }, 800); // Match .editor/.button-bar transition (0.5s + 0.3s delay)
             } else {
+                // Toggling ON
                 editorElement.style.display = 'block';
-                void editorElement.offsetWidth;
+                buttonBar.style.display = 'flex';
+                void editorElement.offsetWidth; // Trigger reflow
+                void buttonBar.offsetWidth;
                 editorElement.classList.remove('hidden');
                 editorElement.classList.add('visible');
                 preview.classList.add('hidden');
                 previewPlaceholder.classList.add('hidden');
-                terminal.classList.add('visible');
-                terminal.classList.remove('hidden');
+                buttonBar.classList.remove('hidden');
                 toggleConsoleButton.classList.add('active');
                 toggleConsoleButton.blur();
-                editor.layout();
+                setTimeout(() => {
+                    terminal.style.display = 'block';
+                    terminal.classList.remove('hidden');
+                    terminal.classList.add('visible');
+                    editor.layout();
+                }, 300); // Delay .terminal show to follow .editor animation start
             }
             console.log(`Console toggled, active: ${toggleConsoleButton.classList.contains('active')}`);
         };
 
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.body.classList.contains('light') ? 'dark' : 'light';
-            document.body.classList.toggle('light');
-            themeToggle.setAttribute('data-theme', currentTheme);
-            editor.setTheme(currentTheme === 'light' ? 'vs' : 'vs-dark');
-            logToTerminal(`Switched to ${currentTheme} theme`);
+        themeCheckbox.addEventListener('change', () => {
+            const isLight = themeCheckbox.checked;
+            document.body.classList.toggle('light', isLight);
+            themeCheckbox.setAttribute('data-theme', isLight ? 'light' : 'dark');
+            editor.setTheme(isLight ? 'vs' : 'vs-dark');
+            logToTerminal(`Switched to ${isLight ? 'light' : 'dark'} theme`);
         });
 
         const addButtonListeners = (button, handler, isToggle = false) => {
