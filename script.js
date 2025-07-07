@@ -70,23 +70,26 @@ require(['vs/editor/editor.main'], () => {
         });
 
         navItems.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                console.log(`Hover start on nav-item: ${item.dataset.nav}`);
-            });
-            item.addEventListener('mouseleave', () => {
-                console.log(`Hover end on nav-item: ${item.dataset.nav}`);
-            });
-            const handleNavClick = (event) => {
-                event.preventDefault();
-                navItems.forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
-                item.blur();
-                logToTerminal(`Navigated to ${item.dataset.nav}`);
-                console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}`);
-            };
-            item.addEventListener('click', handleNavClick);
-            item.addEventListener('touchstart', handleNavClick);
-        });
+    item.addEventListener('mouseenter', () => {
+        console.log(`Hover start on nav-item: ${item.dataset.nav}`);
+    });
+    item.addEventListener('mouseleave', () => {
+        console.log(`Hover end on nav-item: ${item.dataset.nav}`);
+    });
+    const handleNavClick = (event) => {
+        event.preventDefault();
+        navItems.forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+        item.blur();
+        logToTerminal(`Navigated to ${item.dataset.nav}`);
+        console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}`);
+        if (item.dataset.nav === 'profile') {
+            window.location.href = 'profile.html';
+        }
+    };
+    item.addEventListener('click', handleNavClick);
+    item.addEventListener('touchstart', handleNavClick);
+});
 
         languageSelect.addEventListener('change', () => {
             languageSelect.classList.add('active');

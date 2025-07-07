@@ -666,5 +666,86 @@ body.light .btn-send::after {
     background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
     color: #E0D9F6 !important;
     border: 1px solid rgb(194, 82, 225) !important;
-    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
+    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important; 
+}
+
+.profile-container {
+    width: 400px;
+    padding: 24px;
+    height: 692px;
+    max-height: 692px;
+    overflow-y: auto;
+}
+
+.profile-title {
+    color: #E0D9F6;
+    font-size: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 4px;
+    color: #E0D9F6;
+}
+
+.form-group input {
+    padding: 8px;
+    font-size: 14px;
+    background: #2a2a2a;
+    color: #E0D9F6;
+    border: 1px solid #E0D9F6;
+    border-radius: 8px;
+}
+
+.btn-submit {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.profile-link {
+    color: rgb(194, 82, 225);
+    cursor: pointer;
+}
+
+.profile-link:hover {
+    color: rgb(110, 203, 251);
+}
+
+.profile-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.project-list {
+    list-style: none;
+    padding: 0;
+    color: #E0D9F6;
+}
+
+.btn-add-project {
+    width: 200px;
+    align-self: center;
+}
+
+.hidden {
+    display: none;
 }
