@@ -110,33 +110,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (createAccountLink && backToSignInLink && signInForm && createAccountForm) {
-                createAccountLink.addEventListener('click', (event) => {
-                    signInForm.classList.add('fade-out');
+                const toggleForm = (fromForm, toForm, direction) => {
+                    fromForm.classList.remove('fade-in', 'fade-out');
+                    fromForm.classList.add('fade-out');
                     setTimeout(() => {
-                        signInForm.classList.add('hidden');
-                        signInForm.style.display = 'none';
-                        createAccountForm.classList.remove('hidden');
-                        createAccountForm.style.display = 'block';
-                        createAccountForm.classList.add('fade-in');
-                    }, 300);
+                        fromForm.classList.add('hidden');
+                        fromForm.style.display = 'none';
+                        toForm.classList.remove('hidden', 'fade-in', 'fade-out');
+                        toForm.style.display = 'block';
+                        toForm.classList.add('fade-in');
+                    }, 300); // Match fade-out duration
+                };
+
+                createAccountLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    console.log('Create Account link clicked');
+                    toggleForm(signInForm, createAccountForm, 'toCreate');
                 });
 
                 backToSignInLink.addEventListener('click', (event) => {
-                    createAccountForm.classList.add('fade-out');
-                    setTimeout(() => {
-                        createAccountForm.classList.add('hidden');
-                        createAccountForm.style.display = 'none';
-                        signInForm.classList.remove('hidden');
-                        signInForm.style.display = 'block';
-                        signInForm.classList.add('fade-in');
-                    }, 300);
+                    event.preventDefault();
+                    console.log('Back to Sign In link clicked');
+                    toggleForm(createAccountForm, signInForm, 'toSignIn');
                 });
             }
 
-            // Updated navigation logic
             navItems.forEach(item => {
                 const handleNavigation = (event) => {
-                    event.preventDefault(); // Prevent default link behavior
+                    event.preventDefault();
                     navItems.forEach(nav => nav.classList.remove('active'));
                     item.classList.add('active');
                     item.blur();
