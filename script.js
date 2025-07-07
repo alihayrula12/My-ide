@@ -133,12 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
+            // Updated navigation logic
             navItems.forEach(item => {
-                item.addEventListener('click', (event) => {
+                const handleNavigation = (event) => {
+                    event.preventDefault(); // Prevent default link behavior
                     navItems.forEach(nav => nav.classList.remove('active'));
                     item.classList.add('active');
                     item.blur();
-                    logToTerminal(`Navigating to ${item.dataset.nav}`);
+                    const targetPage = item.getAttribute('data-nav');
+                    logToTerminal(`Navigating to ${targetPage}`);
                     setTimeout(() => {
                         const pages = {
                             'profile': 'profile.html',
@@ -146,24 +149,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             'projects': 'projects.html',
                             'settings': 'settings.html'
                         };
-                        if (pages[item.dataset.nav]) window.location.href = pages[item.dataset.nav];
+                        if (pages[targetPage] && window.location.href.indexOf(pages[targetPage]) === -1) {
+                            window.location.href = pages[targetPage];
+                        } else {
+                            logToTerminal(`Already on ${targetPage} page, no navigation needed`);
+                        }
                     }, 300);
-                });
-                item.addEventListener('touchstart', (event) => {
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    item.classList.add('active');
-                    item.blur();
-                    logToTerminal(`Navigating to ${item.dataset.nav}`);
-                    setTimeout(() => {
-                        const pages = {
-                            'profile': 'profile.html',
-                            'create': 'create.html',
-                            'projects': 'projects.html',
-                            'settings': 'settings.html'
-                        };
-                        if (pages[item.dataset.nav]) window.location.href = pages[item.dataset.nav];
-                    }, 300);
-                });
+                };
+                item.addEventListener('click', handleNavigation);
+                item.addEventListener('touchstart', handleNavigation);
             });
 
             if (languageSelect) {
