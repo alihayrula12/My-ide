@@ -12,6 +12,8 @@ body {
     display: flex;
     justify-content: center;
     min-height: 100vh;
+    /* Add transition for smooth theme switch */
+    transition: background 0.3s ease;
 }
 
 body.light {
@@ -46,6 +48,21 @@ body.light textarea {
     width: 100%;
     padding: 24px;
     padding-bottom: 80px;
+    /* Initial hidden state with fade-in animation */
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.3s; /* Delay to show button state */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 header {
@@ -608,7 +625,6 @@ body.light .preview-placeholder {
 .nav-item:focus {
     outline: none;
     box-shadow: 0 0 0 2px #6ECBFB;
-
 }
 
 .hidden {
@@ -759,23 +775,54 @@ body.light .btn-send::after {
     color: #E0D9F6;
 }
 
-.btn-add-project {
-    width: 200px;
-    align-self: center;
-}
-
-.hidden {
-    display: none;
-}
-
-.bottom-nav {
-    display: flex !important;
-    justify-content: space-around;
-    padding: 10px 0;
-    background: #1a1a1a;
-    border-top: 1px solid #333;
-    position: fixed;
-    bottom: 0;
+.project-container {
     width: 100%;
-    z-index: 1000;
+    max-width: 1200px;
+    padding: 24px;
+    height: 692px;
+    max-height: 692px;
+    overflow-y: auto;
+}
+
+.project-title {
+    color: #E0D9F6;
+    font-size: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    padding: 0 20px;
+}
+
+.project-card {
+    position: relative;
+    width: 200px;
+    height: 230px;
+    background: #2a2a2a;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E0D9F6;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #333, #444);
+    box-shadow: 0 0 15px rgba(110, 203, 251, 0.5);
+}
+
+.project-card.active {
+    background: linear-gradient(135deg, rgb(110, 203, 251), rgb(194, 82, 225));
+    box-shadow: 0 0 15px rgba(110, 203, 251, 0.7);
 }

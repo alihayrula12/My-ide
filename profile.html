@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REPLICAT - Profile</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script> <!-- Add Monaco loader -->
+    <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
 </head>
 <body class="dark">
     <div class="container">
@@ -31,41 +31,36 @@
             </div>
         </header>
         <div class="main-content">
-            <div class="card profile-container" role="region" aria-label="User profile and onboarding">
-                <h2 class="profile-title">Welcome to REPLICAT</h2>
-                <div class="profile-content">
-                    <form id="userForm" class="profile-form">
+            <div class="card profile-container" role="region" aria-label="User profile">
+                <h2 class="profile-title">Profile</h2>
+                <div class="profile-content" id="profileContent">
+                    <div class="profile-form" id="signInForm">
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="text" id="username" name="username" placeholder="Enter username">
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required>
+                            <input type="password" id="password" name="password" placeholder="Enter password">
                         </div>
-                        <button type="submit" class="btn btn-submit" aria-label="Create account">Create Account</button>
-                        <p>Already have an account? <a href="#" id="signInLink" class="profile-link">Sign In</a></p>
-                    </form>
-                    <div id="signInForm" class="profile-form hidden">
-                        <div class="form-group">
-                            <label for="signInEmail">Email</label>
-                            <input type="email" id="signInEmail" name="signInEmail" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="signInPassword">Password</label>
-                            <input type="password" id="signInPassword" name="signInPassword" required>
-                        </div>
-                        <button type="submit" class="btn btn-submit" aria-label="Sign in">Sign In</button>
-                        <p>Need an account? <a href="#" id="createAccountLink" class="profile-link">Create Account</a></p>
+                        <button class="btn btn-submit" id="signInButton">Sign In</button>
+                        <button class="btn" id="createAccountButton">Create Account</button>
                     </div>
-                    <div id="profileDashboard" class="profile-dashboard hidden">
-                        <h3>Your Projects</h3>
-                        <ul id="projectList" class="project-list"></ul>
-                        <button class="btn btn-add-project" aria-label="Add new project">Add Project</button>
+                    <div class="profile-form hidden" id="createAccountForm">
+                        <div class="form-group">
+                            <label for="newUsername">Username</label>
+                            <input type="text" id="newUsername" name="newUsername" placeholder="Choose a username">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Password</label>
+                            <input type="password" id="newPassword" name="newPassword" placeholder="Choose a password">
+                        </div>
+                        <button class="btn btn-submit" id="submitAccountButton">Submit</button>
+                        <button class="btn" id="backToSignInButton">Back to Sign In</button>
                     </div>
                 </div>
             </div>
@@ -77,7 +72,6 @@
             <a href="#" class="btn nav-item" data-nav="settings" aria-label="View settings">Settings</a>
         </div>
     </div>
-    <script src="script.js"></script> <!-- Add script.js -->
-    <script src="profile.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

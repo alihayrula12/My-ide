@@ -28,6 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const collaborateButton = document.querySelector('.btn-collaborate');
             const sendButton = document.querySelector('.btn-send');
             const themeCheckbox = document.querySelector('.theme-checkbox');
+            const projectGrid = document.getElementById('projectGrid');
+            const signInForm = document.getElementById('signInForm');
+            const createAccountForm = document.getElementById('createAccountForm');
+            const createAccountButton = document.getElementById('createAccountButton');
+            const backToSignInButton = document.getElementById('backToSignInButton');
+            const importProjectsButton = document.getElementById('importProjectsButton');
 
             const logToTerminal = (message) => {
                 if (toggleConsoleButton && toggleConsoleButton.classList.contains('active')) {
@@ -54,68 +60,87 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            document.addEventListener('mousemove', (e) => {
-                const isOverPreview = e.target.closest('.preview-container');
-                console.log('Mouse move:', {
-                    x: e.clientX,
-                    y: e.clientY,
-                    overPreview: !!isOverPreview,
-                    editorVisible: editorElement ? editorElement.classList.contains('visible') : false,
-                    editorOpacity: editorElement ? getComputedStyle(editorElement).opacity : 'N/A'
+            // Populate project grid with temporary placeholder data
+            const populateProjects = () => {
+                if (!projectGrid) {
+                    console.error('projectGrid element not found');
+                    return;
+                }
+                const sampleProjects = ['Project Alpha', 'Project Beta', 'Project Gamma', 'Project Delta']; // 4 placeholder projects
+                projectGrid.innerHTML = '';
+                sampleProjects.forEach(project => {
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    card.textContent = project;
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('active');
+                        logToTerminal(`Selected: ${project}`);
+                    });
+                    projectGrid.appendChild(card);
                 });
-            });
+                // TODO: Fetch actual projects from backend API based on logged-in user
+            };
 
-            if (editorElement) {
-                editorElement.addEventListener('mouseenter', () => {
-                    console.log('Mouse entered editor');
+            if (projectGrid) {
+                populateProjects();
+            }
+
+            // Toggle between Sign In and Create Account forms
+            if (createAccountButton && backToSignInButton && signInForm && createAccountForm) {
+                createAccountButton.addEventListener('click', () => {
+                    signInForm.classList.add('hidden');
+                    createAccountForm.classList.remove('hidden');
                 });
+                backToSignInButton.addEventListener('click', () => {
+                    createAccountForm.classList.add('hidden');
+                    signInForm.classList.remove('hidden');
+                });
+            }
 
-                editorElement.addEventListener('mouseleave', () => {
-                    console.log('Mouse left editor');
+            // Handle Import Projects button
+            if (importProjectsButton) {
+                importProjectsButton.addEventListener('click', () => {
+                    logToTerminal('Import Projects clicked (not implemented yet)');
                 });
             }
 
             // Initialize navigation
             navItems.forEach(item => {
-                item.addEventListener('mouseenter', () => {
-                    console.log(`Hover start on nav-item: ${item.dataset.nav}`);
-                });
-                item.addEventListener('mouseleave', () => {
-                    console.log(`Hover end on nav-item: ${item.dataset.nav}`);
-                });
                 item.addEventListener('click', (event) => {
-                    console.log('Click event triggered on:', item.dataset.nav);
                     event.preventDefault();
-                    console.log('Default prevented:', event.defaultPrevented);
                     navItems.forEach(nav => nav.classList.remove('active'));
                     item.classList.add('active');
                     item.blur();
                     logToTerminal(`Navigating to ${item.dataset.nav}`);
-                    console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}, preventing default: ${event.defaultPrevented}`);
-                    if (item.dataset.nav === 'profile') {
-                        console.log('Redirecting to profile.html');
-                        window.location.href = 'profile.html';
-                    } else if (item.dataset.nav === 'create') {
-                        console.log('Redirecting to create.html');
-                        window.location.href = 'create.html';
-                    }
+                    setTimeout(() => {
+                        const pages = {
+                            'profile': 'profile.html',
+                            'create': 'create.html',
+                            'projects': 'projects.html',
+                            'settings': 'settings.html' // Assuming a settings page exists or will be added
+                        };
+                        if (pages[item.dataset.nav]) {
+                            window.location.href = pages[item.dataset.nav];
+                        }
+                    }, 300);
                 });
                 item.addEventListener('touchstart', (event) => {
-                    console.log('Touchstart event triggered on:', item.dataset.nav);
                     event.preventDefault();
-                    console.log('Default prevented:', event.defaultPrevented);
                     navItems.forEach(nav => nav.classList.remove('active'));
                     item.classList.add('active');
                     item.blur();
                     logToTerminal(`Navigating to ${item.dataset.nav}`);
-                    console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}, preventing default: ${event.defaultPrevented}`);
-                    if (item.dataset.nav === 'profile') {
-                        console.log('Redirecting to profile.html');
-                        window.location.href = 'profile.html';
-                    } else if (item.dataset.nav === 'create') {
-                        console.log('Redirecting to create.html');
-                        window.location.href = 'create.html';
-                    }
+                    setTimeout(() => {
+                        const pages = {
+                            'profile': 'profile.html',
+                            'create': 'create.html',
+                            'projects': 'projects.html',
+                            'settings': 'settings.html'
+                        };
+                        if (pages[item.dataset.nav]) {
+                            window.location.href = pages[item.dataset.nav];
+                        }
+                    }, 300);
                 });
             });
 
@@ -411,4 +436,4 @@ document.addEventListener('DOMContentLoaded', () => {
             terminal.classList.remove('hidden');
         }
     });
-});
+}
