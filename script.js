@@ -69,27 +69,49 @@ require(['vs/editor/editor.main'], () => {
             console.log('Mouse left editor');
         });
 
+        // Initialize navigation
         navItems.forEach(item => {
-    item.addEventListener('mouseenter', () => {
-        console.log(`Hover start on nav-item: ${item.dataset.nav}`);
-    });
-    item.addEventListener('mouseleave', () => {
-        console.log(`Hover end on nav-item: ${item.dataset.nav}`);
-    });
-    const handleNavClick = (event) => {
-        event.preventDefault();
-        navItems.forEach(nav => nav.classList.remove('active'));
-        item.classList.add('active');
-        item.blur();
-        logToTerminal(`Navigated to ${item.dataset.nav}`);
-        console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}`);
-        if (item.dataset.nav === 'profile') {
-            window.location.href = 'profile.html';
-        }
-    };
-    item.addEventListener('click', handleNavClick);
-    item.addEventListener('touchstart', handleNavClick);
-});
+            item.addEventListener('mouseenter', () => {
+                console.log(`Hover start on nav-item: ${item.dataset.nav}`);
+            });
+            item.addEventListener('mouseleave', () => {
+                console.log(`Hover end on nav-item: ${item.dataset.nav}`);
+            });
+            item.addEventListener('click', (event) => {
+                console.log('Click event triggered on:', item.dataset.nav);
+                event.preventDefault();
+                console.log('Default prevented:', event.defaultPrevented);
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                item.blur();
+                logToTerminal(`Navigating to ${item.dataset.nav}`);
+                console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}, preventing default: ${event.defaultPrevented}`);
+                if (item.dataset.nav === 'profile') {
+                    console.log('Redirecting to profile.html');
+                    window.location.href = 'profile.html';
+                } else if (item.dataset.nav === 'create') {
+                    console.log('Redirecting to create.html');
+                    window.location.href = 'create.html';
+                }
+            });
+            item.addEventListener('touchstart', (event) => {
+                console.log('Touchstart event triggered on:', item.dataset.nav);
+                event.preventDefault();
+                console.log('Default prevented:', event.defaultPrevented);
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                item.blur();
+                logToTerminal(`Navigating to ${item.dataset.nav}`);
+                console.log(`Nav: ${item.dataset.nav}, active: ${item.classList.contains('active')}, preventing default: ${event.defaultPrevented}`);
+                if (item.dataset.nav === 'profile') {
+                    console.log('Redirecting to profile.html');
+                    window.location.href = 'profile.html';
+                } else if (item.dataset.nav === 'create') {
+                    console.log('Redirecting to create.html');
+                    window.location.href = 'create.html';
+                }
+            });
+        });
 
         languageSelect.addEventListener('change', () => {
             languageSelect.classList.add('active');

@@ -581,16 +581,34 @@ body.light .preview-placeholder {
 }
 
 .bottom-nav {
+    display: flex !important;
+    justify-content: space-around;
+    padding: 10px 0;
+    background: #1a1a1a;
+    border-top: 1px solid #333;
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
-    background: transparent;
-    padding: 12px;
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    z-index: 4;
+    width: 100%;
+    z-index: 1000;
+}
+
+.nav-item {
+    color: #E0D9F6;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.nav-item.active, .nav-item:hover {
+    background-color: #2a2a2a;
+    color: #6ECBFB;
+}
+
+.nav-item:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #6ECBFB;
+
 }
 
 .hidden {
@@ -748,4 +766,16 @@ body.light .btn-send::after {
 
 .hidden {
     display: none;
+}
+
+.bottom-nav {
+    display: flex !important;
+    justify-content: space-around;
+    padding: 10px 0;
+    background: #1a1a1a;
+    border-top: 1px solid #333;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
 }
