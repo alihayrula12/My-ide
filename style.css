@@ -8,7 +8,7 @@
 
 body {
     background: linear-gradient(180deg, #121212 0%, #1a1a1a 100%);
-    color: #E0D9F6; /* Lavender */
+    color: #E0D9F6;
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -20,14 +20,14 @@ body.light {
 
 body.light .card {
     background: #ffffff;
-    border: 1px solid #586AE2; /* Royal Blue */
+    border: 1px solid #586AE2;
 }
 
 body.light .chat-history,
 body.light .preview,
 body.light .terminal {
     background: #f5f5f5;
-    color: #333; /* Darker text for visibility in light mode */
+    color: #333;
 }
 
 body.light .chat-history .ai-message {
@@ -60,13 +60,13 @@ h1 {
     color: #E0D9F6;
     font-size: 28px;
     font-weight: 600;
-    text-shadow: 0 0 8px rgba(88, 106, 226, 0.3); /* Royal Blue glow */
+    text-shadow: 0 0 8px rgba(88, 106, 226, 0.3);
 }
 
 .logo {
     font-size: 32px;
     margin-right: 8px;
-    color: rgb(194, 82, 225); /* Medium Orchid */
+    color: rgb(194, 82, 225);
 }
 
 .theme-toggle-container {
@@ -107,7 +107,7 @@ h1 {
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: #333; /* Gray in dark mode */
+    background-color: #333;
     border-radius: 50%;
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
@@ -118,7 +118,7 @@ h1 {
 
 .theme-checkbox:checked + .slider:before {
     transform: translateX(26px);
-    background-color: #FFFFFF; /* White in light mode */
+    background-color: #FFFFFF;
 }
 
 .theme-checkbox + .slider .moon {
@@ -158,7 +158,7 @@ h1 {
 .card {
     background: #1c1c1c;
     border-radius: 12px;
-    border: 1px solid rgb(110, 203, 251); /* Light Sky Blue */
+    border: 1px solid rgb(110, 203, 251);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -552,7 +552,7 @@ body.light .preview-placeholder {
 
 .button-bar {
     position: absolute;
-    bottom: 56px; /* Adjusted for ~16px from .terminal bottom, ~20px to .btn-toggle-console */
+    bottom: 56px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -573,7 +573,7 @@ body.light .preview-placeholder {
 
 .btn-toggle-console {
     position: absolute;
-    bottom: 8px; /* Adjusted to free space for .button-bar */
+    bottom: 8px;
     left: 50% !important;
     transform: translateX(-50%) !important;
     z-index: 13;
@@ -612,4 +612,59 @@ body.light .preview-placeholder {
         max-width: 600px;
         order: 0;
     }
+}
+
+/* Button icon styling */
+.btn-upload,
+.btn-send {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 0;
+}
+
+.btn-upload::after,
+.btn-send::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background: transparent;
+    width: 20px;
+    height: 20px;
+}
+
+.btn-upload::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236E6CFB' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.btn-send::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236E6CFB' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 3l18 8.5L3 20V3z' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 9v4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+body.light .btn-upload::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C252E1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+body.light .btn-send::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C252E1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 3l18 8.5L3 20V3z' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 9v4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.btn-upload:hover:not(.active),
+.btn-send:hover:not(.active) {
+    background: #2a2a2a !important;
+    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
+    transform: scale(1.05);
+}
+
+.btn-upload.active,
+.btn-send.active {
+    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
+    color: #E0D9F6 !important;
+    border: 1px solid rgb(194, 82, 225) !important;
+    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
 }

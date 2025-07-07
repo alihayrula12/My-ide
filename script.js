@@ -24,7 +24,6 @@ require(['vs/editor/editor.main'], () => {
         const sendButton = document.querySelector('.btn-send');
         const themeCheckbox = document.querySelector('.theme-checkbox');
 
-        // Debug logs
         const logToTerminal = (message) => {
             if (toggleConsoleButton.classList.contains('active')) {
                 terminal.textContent = message;
@@ -51,7 +50,6 @@ require(['vs/editor/editor.main'], () => {
             return;
         }
 
-        // Debug mouse events
         document.addEventListener('mousemove', (e) => {
             const isOverPreview = e.target.closest('.preview-container');
             console.log('Mouse move:', {
@@ -222,7 +220,7 @@ require(['vs/editor/editor.main'], () => {
                 logToTerminal('AI not available on iPad...');
             }
             chatHistory.scrollTop = chatHistory.scrollHeight;
-            document.getElementById('ai-prompt').value = ''; // Clear prompt
+            document.getElementById('ai-prompt').value = '';
         };
 
         window.startCollaboration = () => {
@@ -236,29 +234,27 @@ require(['vs/editor/editor.main'], () => {
         window.toggleConsole = () => {
             toggleConsoleButton.style.pointerEvents = 'auto';
             if (editorElement.classList.contains('visible')) {
-                // Toggling OFF
                 editorElement.classList.remove('visible');
                 editorElement.classList.add('hidden');
                 preview.classList.remove('hidden');
                 previewPlaceholder.classList.remove('hidden');
                 terminal.classList.remove('visible');
                 terminal.classList.add('hidden');
-                terminal.style.display = 'none'; // Hide instantly
+                terminal.style.display = 'none';
                 toggleConsoleButton.classList.remove('active');
                 toggleConsoleButton.blur();
-                buttonBar.classList.add('hidden'); // Reset opacity
+                buttonBar.classList.add('hidden');
                 setTimeout(() => {
                     if (editorElement.classList.contains('hidden')) {
                         editorElement.style.display = 'none';
                         buttonBar.style.display = 'none';
                         editor.layout();
                     }
-                }, 800); // Match .editor/.button-bar transition (0.5s + 0.3s delay)
+                }, 800);
             } else {
-                // Toggling ON
                 editorElement.style.display = 'block';
                 buttonBar.style.display = 'flex';
-                void editorElement.offsetWidth; // Trigger reflow
+                void editorElement.offsetWidth;
                 void buttonBar.offsetWidth;
                 editorElement.classList.remove('hidden');
                 editorElement.classList.add('visible');
@@ -272,7 +268,7 @@ require(['vs/editor/editor.main'], () => {
                     terminal.classList.remove('hidden');
                     terminal.classList.add('visible');
                     editor.layout();
-                }, 300); // Delay .terminal show to follow .editor animation start
+                }, 300);
             }
             console.log(`Console toggled, active: ${toggleConsoleButton.classList.contains('active')}`);
         };
@@ -320,6 +316,27 @@ require(['vs/editor/editor.main'], () => {
                 window.requestAI();
             }
         });
+
+        const uploadButton = document.querySelector('.btn-upload');
+        if (uploadButton) {
+            uploadButton.addEventListener('click', () => {
+                const fileInput = uploadButton.querySelector('input[type="file"]');
+                fileInput.click();
+            });
+
+            uploadButton.querySelector('input[type="file"]').addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    logToTerminal(`File selected: ${file.name}`);
+                    console.log('File upload not implemented on iPad');
+                }
+            });
+
+            addButtonListeners(uploadButton, () => {
+                const fileInput = uploadButton.querySelector('input[type="file"]');
+                fileInput.click();
+            });
+        }
     } catch (error) {
         console.error('Editor error:', error);
         const terminal = document.getElementById('terminal');
