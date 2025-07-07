@@ -6,6 +6,8 @@
     <title>REPLICAT - Profile</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
+    <!-- Remove profile.js reference if present -->
+    <!-- <script src="profile.js"></script> -->
 </head>
 <body class="dark">
     <div class="container">
@@ -44,23 +46,23 @@
                             <input type="password" id="password" name="password" placeholder="Enter password">
                         </div>
                         <button class="btn btn-submit" id="signInButton">Sign In</button>
-                        <button class="btn" id="createAccountButton">Create Account</button>
+                        <a href="#" class="profile-link" id="createAccountLink">Create Account</a>
                     </div>
-                    <div class="profile-form hidden" id="createAccountForm">
+                    <div class="profile-form hidden" id="createAccountForm" style="display: none;"> <!-- Explicitly hidden -->
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter email">
+                        </div>
                         <div class="form-group">
                             <label for="newUsername">Username</label>
                             <input type="text" id="newUsername" name="newUsername" placeholder="Choose a username">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Enter email">
                         </div>
                         <div class="form-group">
                             <label for="newPassword">Password</label>
                             <input type="password" id="newPassword" name="newPassword" placeholder="Choose a password">
                         </div>
                         <button class="btn btn-submit" id="submitAccountButton">Submit</button>
-                        <button class="btn" id="backToSignInButton">Back to Sign In</button>
+                        <a href="#" class="profile-link" id="backToSignInLink">Back to Sign In</a>
                     </div>
                 </div>
             </div>

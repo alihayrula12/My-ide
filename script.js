@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const projectGrid = document.getElementById('projectGrid');
             const signInForm = document.getElementById('signInForm');
             const createAccountForm = document.getElementById('createAccountForm');
-            const createAccountButton = document.getElementById('createAccountButton');
-            const backToSignInButton = document.getElementById('backToSignInButton');
+            const createAccountLink = document.getElementById('createAccountLink');
+            const backToSignInLink = document.getElementById('backToSignInLink');
             const importProjectsButton = document.getElementById('importProjectsButton');
 
             const logToTerminal = (message) => {
@@ -85,22 +85,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 populateProjects();
             }
 
-            // Toggle between Sign In and Create Account forms
-            if (createAccountButton && backToSignInButton && signInForm && createAccountForm) {
-                createAccountButton.addEventListener('click', () => {
-                    signInForm.classList.add('hidden');
-                    createAccountForm.classList.remove('hidden');
-                });
-                backToSignInButton.addEventListener('click', () => {
-                    createAccountForm.classList.add('hidden');
-                    signInForm.classList.remove('hidden');
-                });
-            }
-
             // Handle Import Projects button
             if (importProjectsButton) {
                 importProjectsButton.addEventListener('click', () => {
                     logToTerminal('Import Projects clicked (not implemented yet)');
+                });
+            }
+
+            // Debug initial state for Profile forms
+            console.log('Initial state - signInForm visible:', signInForm ? !signInForm.classList.contains('hidden') : 'Not found');
+            console.log('Initial state - createAccountForm hidden:', createAccountForm ? createAccountForm.classList.contains('hidden') : 'Not found');
+
+            // Ensure only Sign In form is visible on load
+            if (signInForm && createAccountForm) {
+                createAccountForm.classList.add('hidden');
+                createAccountForm.style.display = 'none'; // Fallback
+                console.log('Forced createAccountForm to hidden on load');
+            }
+
+            // Toggle between Sign In and Create Account forms with fade animation
+            if (createAccountLink && backToSignInLink && signInForm && createAccountForm) {
+                createAccountLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    console.log('Create Account link clicked');
+                    // Reset classes to ensure animation plays
+                    signInForm.classList.remove('fade-in');
+                    createAccountForm.classList.remove('fade-in', 'fade-out');
+                    signInForm.classList.add('fade-out');
+                    setTimeout(() => {
+                        signInForm.classList.add('hidden');
+                        signInForm.style.display = 'none';
+                        createAccountForm.classList.remove('hidden');
+                        createAccountForm.style.display = 'block';
+                        setTimeout(() => {
+                            createAccountForm.classList.add('fade-in');
+                            console.log('Switched to Create Account form with fade-in');
+                        }, 10); // Slight delay to trigger transition
+                    }, 300); // Match fade-out duration
+                });
+
+                backToSignInLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    console.log('Back to Sign In link clicked');
+                    // Reset classes to ensure animation plays
+                    createAccountForm.classList.remove('fade-in');
+                    signInForm.classList.remove('fade-in', 'fade-out');
+                    createAccountForm.classList.add('fade-out');
+                    setTimeout(() => {
+                        createAccountForm.classList.add('hidden');
+                        createAccountForm.style.display = 'none';
+                        signInForm.classList.remove('hidden');
+                        signInForm.style.display = 'block';
+                        setTimeout(() => {
+                            signInForm.classList.add('fade-in');
+                            console.log('Switched back to Sign In form with fade-in');
+                        }, 10); // Slight delay to trigger transition
+                    }, 300); // Match fade-out duration
+                });
+            } else {
+                console.error('One or more form elements not found:', {
+                    createAccountLink, backToSignInLink, signInForm, createAccountForm
                 });
             }
 
@@ -436,4 +480,4 @@ document.addEventListener('DOMContentLoaded', () => {
             terminal.classList.remove('hidden');
         }
     });
-}
+});

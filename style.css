@@ -826,3 +826,19 @@ body.light .btn-send::after {
     background: linear-gradient(135deg, rgb(110, 203, 251), rgb(194, 82, 225));
     box-shadow: 0 0 15px rgba(110, 203, 251, 0.7);
 }
+
+/* Existing styles remain unchanged, append these */
+.profile-form {
+    opacity: 1;
+    transition: opacity 300ms ease;
+}
+
+.profile-form.fade-out {
+    opacity: 0;
+    pointer-events: none; /* Prevent interaction during fade */
+}
+
+.profile-form.fade-in {
+    opacity: 1;
+    pointer-events: auto; /* Restore interaction */
+}
