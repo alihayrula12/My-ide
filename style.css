@@ -636,6 +636,7 @@ body.light .preview-placeholder {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Media Queries */
 @media (max-width: 768px) {
     .main-content {
         flex-direction: column;
@@ -703,6 +704,7 @@ body.light .btn-send::after {
     box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important; 
 }
 
+/* Profile-specific styles */
 .profile-container {
     width: 400px;
     padding: 24px;
@@ -728,6 +730,18 @@ body.light .btn-send::after {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    opacity: 1;
+    transition: opacity 300ms ease;
+}
+
+.profile-form.fade-out {
+    opacity: 0;
+    pointer-events: none; /* Prevent interaction during fade */
+}
+
+.profile-form.fade-in {
+    opacity: 1;
+    pointer-events: auto; /* Restore interaction */
 }
 
 .form-group {
@@ -740,6 +754,10 @@ body.light .btn-send::after {
     color: #E0D9F6;
 }
 
+body.light .form-group label {
+    color: #333;
+}
+
 .form-group input {
     padding: 8px;
     font-size: 14px;
@@ -747,6 +765,12 @@ body.light .btn-send::after {
     color: #E0D9F6;
     border: 1px solid #E0D9F6;
     border-radius: 8px;
+}
+
+body.light .form-group input {
+    background: #ffffff;
+    color: #333;
+    border: 1px solid #586AE2;
 }
 
 .btn-submit {
@@ -775,6 +799,7 @@ body.light .btn-send::after {
     color: #E0D9F6;
 }
 
+/* Project-specific styles */
 .project-container {
     width: 100%;
     max-width: 1200px;
@@ -782,44 +807,147 @@ body.light .btn-send::after {
     height: 692px;
     max-height: 692px;
     overflow-y: auto;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(10, 10, 10, 0.9));
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-.project-title {
-    color: #E0D9F6;
-    font-size: 24px;
-    margin-bottom: 24px;
-    text-align: center;
+body.light .project-container {
+    background: linear-gradient(135deg, rgba(240, 240, 240, 0.9), rgba(230, 230, 230, 0.9));
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     justify-items: center;
     padding: 0 20px;
+    position: relative;
+    background: repeating-linear-gradient(
+        60deg,
+        transparent,
+        transparent 30px,
+        rgba(110, 203, 251, 0.1) 30px,
+        rgba(110, 203, 251, 0.1) 60px
+    ); /* Hexagonal comb background */
 }
 
-.project-card {
+body.light .project-grid {
+    background: repeating-linear-gradient(
+        60deg,
+        transparent,
+        transparent 30px,
+        rgba(194, 82, 225, 0.1) 30px,
+        rgba(194, 82, 225, 0.1) 60px
+    );
+}
+/* ... (keep all existing styles up to .project-grid) ... */
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    padding: 0 20px;
     position: relative;
-    width: 200px;
-    height: 230px;
-    background: #2a2a2a;
+    /* Remove infinite panGrid animation */
+    /* animation: panGrid 20s linear infinite; */
+}
+
+/* Optional: Add a subtle hover rise effect instead */
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(110, 203, 251, 0.3);
+}
+
+/* Keep existing hexagonal and breathing styles unchanged for now */
+.project-card .hexagon {
+    width: 60px;
+    height: 69px;
+    background: linear-gradient(135deg, #6ECBFB, #4A90E2);
+    position: relative;
+    margin: 0 auto 15px;
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    animation: hexagonGlow 3s infinite alternate;
+}
+
+body.light .project-card .hexagon {
+    background: linear-gradient(135deg, #C252E1, #9B59B6);
+}
+
+@keyframes hexagonGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.3); }
+}
+
+.project-card .hexagon::before,
+.project-card .hexagon::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+}
+
+.project-card .hexagon::before {
+    bottom: 100%;
+    border-bottom: 34.5px solid #6ECBFB;
+}
+
+body.light .project-card .hexagon::before {
+    border-bottom: 34.5px solid #C252E1;
+}
+
+.project-card .hexagon::after {
+    top: 100%;
+    border-top: 34.5px solid #6ECBFB;
+}
+
+body.light .project-card .hexagon::after {
+    border-top: 34.5px solid #C252E1;
+}
+
+/* ... (keep remaining styles unchanged) ... */
+
+.project-card h3 {
+    margin: 0 0 10px;
     color: #E0D9F6;
     font-size: 18px;
-    font-weight: 600;
     text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+    position: relative;
+}
+
+body.light .project-card h3 {
+    color: #333;
+}
+
+.project-card p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+body.light .project-card p {
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .project-card:hover {
-    transform: scale(1.05);
-    background: linear-gradient(135deg, #333, #444);
-    box-shadow: 0 0 15px rgba(110, 203, 251, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(110, 203, 251, 0.3);
 }
 
 .project-card.active {
@@ -827,18 +955,7 @@ body.light .btn-send::after {
     box-shadow: 0 0 15px rgba(110, 203, 251, 0.7);
 }
 
-/* Existing styles remain unchanged, append these */
-.profile-form {
-    opacity: 1;
-    transition: opacity 300ms ease;
-}
-
-.profile-form.fade-out {
-    opacity: 0;
-    pointer-events: none; /* Prevent interaction during fade */
-}
-
-.profile-form.fade-in {
-    opacity: 1;
-    pointer-events: auto; /* Restore interaction */
+@keyframes glow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

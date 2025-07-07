@@ -6,8 +6,6 @@
     <title>REPLICAT - Profile</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
-    <!-- Remove profile.js reference if present -->
-    <!-- <script src="profile.js"></script> -->
 </head>
 <body class="dark">
     <div class="container">
@@ -33,10 +31,10 @@
             </div>
         </header>
         <div class="main-content">
-            <div class="card profile-container" role="region" aria-label="User profile">
+            <div class="card profile-container" role="region" aria-label="Profile dashboard">
                 <h2 class="profile-title">Profile</h2>
-                <div class="profile-content" id="profileContent">
-                    <div class="profile-form" id="signInForm">
+                <div class="profile-content">
+                    <div class="profile-form fade-in" id="signInForm">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" placeholder="Enter username">
@@ -45,33 +43,33 @@
                             <label for="password">Password</label>
                             <input type="password" id="password" name="password" placeholder="Enter password">
                         </div>
-                        <button class="btn btn-submit" id="signInButton">Sign In</button>
+                        <button class="btn btn-submit">Sign In</button>
                         <a href="#" class="profile-link" id="createAccountLink">Create Account</a>
                     </div>
-                    <div class="profile-form hidden" id="createAccountForm" style="display: none;"> <!-- Explicitly hidden -->
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Enter email">
-                        </div>
+                    <div class="profile-form hidden" id="createAccountForm">
                         <div class="form-group">
                             <label for="newUsername">Username</label>
-                            <input type="text" id="newUsername" name="newUsername" placeholder="Choose a username">
+                            <input type="text" id="newUsername" name="newUsername" placeholder="Enter new username">
                         </div>
                         <div class="form-group">
                             <label for="newPassword">Password</label>
-                            <input type="password" id="newPassword" name="newPassword" placeholder="Choose a password">
+                            <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
                         </div>
-                        <button class="btn btn-submit" id="submitAccountButton">Submit</button>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password">
+                        </div>
+                        <button class="btn btn-submit">Create Account</button>
                         <a href="#" class="profile-link" id="backToSignInLink">Back to Sign In</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="bottom-nav" role="navigation" aria-label="Main navigation">
-            <a href="#" class="btn nav-item" data-nav="projects" aria-label="View projects">Projects</a>
-            <a href="#" class="btn nav-item" data-nav="create" aria-label="Create new project">Create</a>
-            <a href="#" class="btn nav-item" data-nav="profile" aria-label="View profile" class="active">Profile</a>
-            <a href="#" class="btn nav-item" data-nav="settings" aria-label="View settings">Settings</a>
+            <a href="profile.html" class="btn nav-item" data-nav="profile" aria-label="View profile" class="active">Profile</a>
+            <a href="create.html" class="btn nav-item" data-nav="create" aria-label="Create new project">Create</a>
+            <a href="projects.html" class="btn nav-item" data-nav="projects" aria-label="View projects">Projects</a>
+            <a href="settings.html" class="btn nav-item" data-nav="settings" aria-label="View settings">Settings</a>
         </div>
     </div>
     <script src="script.js"></script>

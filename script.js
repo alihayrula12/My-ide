@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@0.34.0/min/vs' } });
     require(['vs/editor/editor.main'], () => {
         try {
-            // Editor setup (only if editor element exists)
             let editor = null;
             const editorElement = document.getElementById('editor');
             if (editorElement) {
@@ -34,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const createAccountLink = document.getElementById('createAccountLink');
             const backToSignInLink = document.getElementById('backToSignInLink');
             const importProjectsButton = document.getElementById('importProjectsButton');
+            const createProjectButton = document.getElementById('createProjectButton');
 
             const logToTerminal = (message) => {
                 if (toggleConsoleButton && toggleConsoleButton.classList.contains('active')) {
@@ -60,116 +60,81 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Populate project grid with temporary placeholder data
             const populateProjects = () => {
                 if (!projectGrid) {
                     console.error('projectGrid element not found');
                     return;
                 }
-                const sampleProjects = ['Project Alpha', 'Project Beta', 'Project Gamma', 'Project Delta']; // 4 placeholder projects
+                const sampleProjects = [
+                    { name: 'Project Alpha', description: 'AI-driven analytics tool' },
+                    { name: 'Project Beta', description: 'Collaborative coding platform' },
+                    { name: 'Project Gamma', description: 'Real-time data visualization' },
+                    { name: 'Project Delta', description: 'Automated testing suite' }
+                ];
                 projectGrid.innerHTML = '';
                 sampleProjects.forEach(project => {
                     const card = document.createElement('div');
                     card.className = 'project-card';
-                    card.textContent = project;
+                    card.innerHTML = `
+                        <div class="hexagon">⚙️</div>
+                        <h3>${project.name}</h3>
+                        <p>${project.description}</p>
+                    `;
                     card.addEventListener('click', () => {
                         card.classList.toggle('active');
-                        logToTerminal(`Selected: ${project}`);
+                        logToTerminal(`Selected: ${project.name}`);
                     });
                     projectGrid.appendChild(card);
                 });
-                // TODO: Fetch actual projects from backend API based on logged-in user
             };
 
             if (projectGrid) {
                 populateProjects();
             }
 
-            // Handle Import Projects button
             if (importProjectsButton) {
                 importProjectsButton.addEventListener('click', () => {
                     logToTerminal('Import Projects clicked (not implemented yet)');
                 });
             }
 
-            // Debug initial state for Profile forms
-            console.log('Initial state - signInForm visible:', signInForm ? !signInForm.classList.contains('hidden') : 'Not found');
-            console.log('Initial state - createAccountForm hidden:', createAccountForm ? createAccountForm.classList.contains('hidden') : 'Not found');
-
-            // Ensure only Sign In form is visible on load
-            if (signInForm && createAccountForm) {
-                createAccountForm.classList.add('hidden');
-                createAccountForm.style.display = 'none'; // Fallback
-                console.log('Forced createAccountForm to hidden on load');
+            if (createProjectButton) {
+                createProjectButton.addEventListener('click', () => {
+                    logToTerminal('Create New Project clicked (not implemented yet)');
+                });
             }
 
-            // Toggle between Sign In and Create Account forms with fade animation
+            if (signInForm && createAccountForm) {
+                createAccountForm.classList.add('hidden');
+                createAccountForm.style.display = 'none';
+            }
+
             if (createAccountLink && backToSignInLink && signInForm && createAccountForm) {
                 createAccountLink.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    console.log('Create Account link clicked');
-                    // Reset classes to ensure animation plays
-                    signInForm.classList.remove('fade-in');
-                    createAccountForm.classList.remove('fade-in', 'fade-out');
                     signInForm.classList.add('fade-out');
                     setTimeout(() => {
                         signInForm.classList.add('hidden');
                         signInForm.style.display = 'none';
                         createAccountForm.classList.remove('hidden');
                         createAccountForm.style.display = 'block';
-                        setTimeout(() => {
-                            createAccountForm.classList.add('fade-in');
-                            console.log('Switched to Create Account form with fade-in');
-                        }, 10); // Slight delay to trigger transition
-                    }, 300); // Match fade-out duration
+                        createAccountForm.classList.add('fade-in');
+                    }, 300);
                 });
 
                 backToSignInLink.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    console.log('Back to Sign In link clicked');
-                    // Reset classes to ensure animation plays
-                    createAccountForm.classList.remove('fade-in');
-                    signInForm.classList.remove('fade-in', 'fade-out');
                     createAccountForm.classList.add('fade-out');
                     setTimeout(() => {
                         createAccountForm.classList.add('hidden');
                         createAccountForm.style.display = 'none';
                         signInForm.classList.remove('hidden');
                         signInForm.style.display = 'block';
-                        setTimeout(() => {
-                            signInForm.classList.add('fade-in');
-                            console.log('Switched back to Sign In form with fade-in');
-                        }, 10); // Slight delay to trigger transition
-                    }, 300); // Match fade-out duration
-                });
-            } else {
-                console.error('One or more form elements not found:', {
-                    createAccountLink, backToSignInLink, signInForm, createAccountForm
+                        signInForm.classList.add('fade-in');
+                    }, 300);
                 });
             }
 
-            // Initialize navigation
             navItems.forEach(item => {
                 item.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    item.classList.add('active');
-                    item.blur();
-                    logToTerminal(`Navigating to ${item.dataset.nav}`);
-                    setTimeout(() => {
-                        const pages = {
-                            'profile': 'profile.html',
-                            'create': 'create.html',
-                            'projects': 'projects.html',
-                            'settings': 'settings.html' // Assuming a settings page exists or will be added
-                        };
-                        if (pages[item.dataset.nav]) {
-                            window.location.href = pages[item.dataset.nav];
-                        }
-                    }, 300);
-                });
-                item.addEventListener('touchstart', (event) => {
-                    event.preventDefault();
                     navItems.forEach(nav => nav.classList.remove('active'));
                     item.classList.add('active');
                     item.blur();
@@ -181,9 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
                             'projects': 'projects.html',
                             'settings': 'settings.html'
                         };
-                        if (pages[item.dataset.nav]) {
-                            window.location.href = pages[item.dataset.nav];
-                        }
+                        if (pages[item.dataset.nav]) window.location.href = pages[item.dataset.nav];
+                    }, 300);
+                });
+                item.addEventListener('touchstart', (event) => {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    item.blur();
+                    logToTerminal(`Navigating to ${item.dataset.nav}`);
+                    setTimeout(() => {
+                        const pages = {
+                            'profile': 'profile.html',
+                            'create': 'create.html',
+                            'projects': 'projects.html',
+                            'settings': 'settings.html'
+                        };
+                        if (pages[item.dataset.nav]) window.location.href = pages[item.dataset.nav];
                     }, 300);
                 });
             });
@@ -193,16 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     languageSelect.classList.add('active');
                     languageSelect.blur();
                     setTimeout(() => languageSelect.classList.remove('active'), 300);
-                    console.log('Select changed, active: true');
                     window.changeLanguage();
                 });
-
-                languageSelect.addEventListener('touchstart', (event) => {
-                    event.preventDefault();
+                languageSelect.addEventListener('touchstart', () => {
                     languageSelect.classList.add('active');
                     languageSelect.blur();
                     setTimeout(() => languageSelect.classList.remove('active'), 300);
-                    console.log('Select touched, active: true');
                 });
             }
 
@@ -229,16 +203,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             previewPlaceholder.classList.add('hidden');
                             logToTerminal('Preview updated');
                         } else {
-                            const response = await fetch('/run', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ code, language })
-                            });
-                            const result = await response.json();
-                            logToTerminal(result.output || 'Error running code');
+                            logToTerminal('Backend not available on iPad...');
                         }
                     } catch (error) {
-                        logToTerminal('Backend not available on iPad...');
+                        logToTerminal('Error running code');
                     } finally {
                         runButton.classList.remove('active', 'loading');
                         runButton.disabled = false;
@@ -249,14 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.requestAI = async () => {
                 if (chatHistory && sendButton) {
                     const prompt = document.getElementById('ai-prompt').value;
-                    const code = editor ? editor.getValue() : '';
                     const userMessage = document.createElement('div');
                     userMessage.className = 'message user-message';
                     userMessage.textContent = prompt;
                     chatHistory.appendChild(userMessage);
-
-                    const existingIndicator = chatHistory.querySelector('.typing-indicator');
-                    if (existingIndicator) existingIndicator.remove();
 
                     const typingIndicator = document.createElement('div');
                     typingIndicator.className = 'typing-indicator';
@@ -267,57 +231,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     sendButton.classList.add('active');
                     sendButton.blur();
                     setTimeout(() => sendButton.classList.remove('active'), 300);
-                    console.log('Send clicked, active: true');
 
                     try {
-                        const response = await fetch('/ai/complete', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ prompt, code })
-                        });
-
                         typingIndicator.remove();
                         const aiMessage = document.createElement('div');
                         aiMessage.className = 'message ai-message';
+                        aiMessage.textContent = 'Mock AI response';
                         chatHistory.appendChild(aiMessage);
-
-                        const reader = response.body.getReader();
-                        const decoder = new TextDecoder();
-                        let done = false;
-                        let fullResponse = '';
-
-                        while (!done) {
-                            const { value, done: streamDone } = await reader.read();
-                            done = streamDone;
-                            if (value) {
-                                const chunk = decoder.decode(value);
-                                const lines = chunk.split('\n\n');
-                                for (const line of lines) {
-                                    if (line.startsWith('data: ')) {
-                                        const data = JSON.parse(line.slice(6));
-                                        if (data.completion) {
-                                            aiMessage.textContent += data.completion;
-                                            fullResponse += data.completion;
-                                            chatHistory.scrollTop = chatHistory.scrollHeight;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (fullResponse.includes('```')) {
-                            const copyButton = document.createElement('button');
-                            copyButton.className = 'btn btn-copy-code';
-                            copyButton.textContent = 'Copy to Editor';
-                            copyButton.onclick = () => {
-                                if (editor) {
-                                    const codeMatch = fullResponse.match(/```[\s\S]*?```/g)?.[0]?.replace(/```/g, '') || '';
-                                    editor.setValue(codeMatch);
-                                    logToTerminal('Code copied to editor');
-                                }
-                            };
-                            aiMessage.appendChild(copyButton);
-                        }
                         logToTerminal('AI response added to chat');
                     } catch (error) {
                         typingIndicator.remove();
@@ -328,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         logToTerminal('AI not available on iPad...');
                     }
                     chatHistory.scrollTop = chatHistory.scrollHeight;
-                    if (document.getElementById('ai-prompt')) document.getElementById('ai-prompt').value = '';
+                    document.getElementById('ai-prompt').value = '';
                 }
             };
 
@@ -337,14 +257,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     collaborateButton.classList.add('active');
                     collaborateButton.blur();
                     setTimeout(() => collaborateButton.classList.remove('active'), 300);
-                    console.log('Collaborate clicked, active: true');
                     logToTerminal('Collaboration not available on iPad...');
                 }
             };
 
             window.toggleConsole = () => {
                 if (toggleConsoleButton && editorElement) {
-                    toggleConsoleButton.style.pointerEvents = 'auto';
                     if (editorElement.classList.contains('visible')) {
                         editorElement.classList.remove('visible');
                         editorElement.classList.add('hidden');
@@ -359,17 +277,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         toggleConsoleButton.blur();
                         if (buttonBar) buttonBar.classList.add('hidden');
                         setTimeout(() => {
-                            if (editorElement.classList.contains('hidden')) {
-                                editorElement.style.display = 'none';
-                                if (buttonBar) buttonBar.style.display = 'none';
-                                if (editor) editor.layout();
-                            }
+                            editorElement.style.display = 'none';
+                            if (buttonBar) buttonBar.style.display = 'none';
                         }, 800);
                     } else {
                         editorElement.style.display = 'block';
                         if (buttonBar) buttonBar.style.display = 'flex';
-                        void editorElement.offsetWidth;
-                        if (buttonBar) void buttonBar.offsetWidth;
                         editorElement.classList.remove('hidden');
                         editorElement.classList.add('visible');
                         if (preview) preview.classList.add('hidden');
@@ -383,10 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 terminal.classList.remove('hidden');
                                 terminal.classList.add('visible');
                             }
-                            if (editor) editor.layout();
                         }, 300);
                     }
-                    console.log(`Console toggled, active: ${toggleConsoleButton.classList.contains('active')}`);
                 }
             };
 
@@ -403,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const addButtonListeners = (button, handler, isToggle = false) => {
                 if (button) {
                     const handleEvent = (event) => {
-                        event.preventDefault();
                         if (isToggle && button.classList.contains('active')) {
                             button.classList.remove('active');
                         } else {
@@ -414,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (!isToggle) {
                             setTimeout(() => button.classList.remove('active'), 300);
                         }
-                        console.log(`${button.textContent || 'Select'} ${isToggle ? 'toggled' : 'clicked'}, active: ${button.classList.contains('active')}`);
                     };
                     button.addEventListener('click', handleEvent);
                     button.addEventListener('touchstart', handleEvent);
@@ -430,12 +339,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (aiPrompt) {
                 aiPrompt.addEventListener('keydown', (event) => {
                     if (event.key === 'Enter' && !event.shiftKey) {
-                        event.preventDefault();
                         if (sendButton) {
                             sendButton.classList.add('active');
                             sendButton.blur();
                             setTimeout(() => sendButton.classList.remove('active'), 300);
-                            console.log('Enter pressed, Send active: true');
                             window.requestAI();
                         }
                     }
@@ -448,15 +355,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const fileInput = uploadButton.querySelector('input[type="file"]');
                     fileInput.click();
                 });
-
                 uploadButton.querySelector('input[type="file"]').addEventListener('change', (event) => {
                     const file = event.target.files[0];
-                    if (file) {
-                        logToTerminal(`File selected: ${file.name}`);
-                        console.log('File upload not implemented on iPad');
-                    }
+                    if (file) logToTerminal(`File selected: ${file.name}`);
                 });
-
                 addButtonListeners(uploadButton, () => {
                     const fileInput = uploadButton.querySelector('input[type="file"]');
                     fileInput.click();
