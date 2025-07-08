@@ -12,7 +12,6 @@ body {
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    /* Add transition for smooth theme switch */
     transition: background 0.3s ease;
 }
 
@@ -48,10 +47,9 @@ body.light textarea {
     width: 100%;
     padding: 24px;
     padding-bottom: 80px;
-    /* Initial hidden state with fade-in animation */
     opacity: 0;
     animation: fadeIn 0.5s ease forwards;
-    animation-delay: 0.3s; /* Delay to show button state */
+    animation-delay: 0.3s;
 }
 
 @keyframes fadeIn {
@@ -316,7 +314,7 @@ textarea:focus {
 }
 
 .btn:focus {
-    outline: 2px solid rgb(110, 203, 251);
+    outline: 2px solid rgb(110, 251);
     outline-offset: 2px;
 }
 
@@ -397,7 +395,8 @@ textarea:focus {
     transform: scale(1.05);
 }
 
-.btn-select:focus, .btn-select.active {
+.btn-select:focus,
+.btn-select.active {
     background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
     color: #E0D9F6 !important;
     border: 1px solid rgb(194, 82, 225) !important;
@@ -617,7 +616,8 @@ body.light .preview-placeholder {
     transition: background-color 0.3s;
 }
 
-.nav-item.active, .nav-item:hover {
+.nav-item.active,
+.nav-item:hover {
     background-color: #2a2a2a;
     color: #6ECBFB;
 }
@@ -629,79 +629,6 @@ body.light .preview-placeholder {
 
 .hidden {
     display: none;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Media Queries */
-@media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-        align-items: center;
-    }
-    .chat-container, .editor-preview {
-        width: 100%;
-        max-width: 600px;
-        order: 0;
-    }
-}
-
-/* Button icon styling */
-.btn-upload,
-.btn-send {
-    position: relative;
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    border-radius: 50%;
-    font-size: 0;
-}
-
-.btn-upload::after,
-.btn-send::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    background: transparent;
-    width: 20px;
-    height: 20px;
-}
-
-.btn-upload::after {
-    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236E6CFB' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-.btn-send::after {
-    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236E6CFB' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 3l18 8.5L3 20V3z' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 9v4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-body.light .btn-upload::after {
-    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C252E1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-body.light .btn-send::after {
-    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C252E1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 3l18 8.5L3 20V3z' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 9v4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-.btn-upload:hover:not(.active),
-.btn-send:hover:not(.active) {
-    background: #2a2a2a !important;
-    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
-    transform: scale(1.05);
-}
-
-.btn-upload.active,
-.btn-send.active {
-    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
-    color: #E0D9F6 !important;
-    border: 1px solid rgb(194, 82, 225) !important;
-    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important; 
 }
 
 /* Profile-specific styles */
@@ -736,12 +663,12 @@ body.light .btn-send::after {
 
 .profile-form.fade-out {
     opacity: 0;
-    pointer-events: none; /* Prevent interaction during fade */
+    pointer-events: none;
 }
 
 .profile-form.fade-in {
     opacity: 1;
-    pointer-events: auto; /* Restore interaction */
+    pointer-events: auto;
 }
 
 .form-group {
@@ -807,7 +734,10 @@ body.light .form-group input {
     height: 692px;
     max-height: 692px;
     overflow-y: auto;
-    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(10, 10, 10, 0.9));
+    background-color: #1a1a1a; /* Base dark color */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6'%3E%3Cpath d='M50 0 L100 25 v36.6 L50 86.6 0 61.6 V25 L50 0z' fill='none' stroke='%236ECBFB' stroke-width='2'/%3E%3Cpath d='M50 2.5 L97.5 25 v34.1 L50 84.1 2.5 61.6 V25 L50 2.5z' fill='none' stroke='%236ECBFB' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 200px 173px; /* Scaled up for ~6 hexagons per row */
+    background-repeat: repeat;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -815,55 +745,45 @@ body.light .form-group input {
 }
 
 body.light .project-container {
-    background: linear-gradient(135deg, rgba(240, 240, 240, 0.9), rgba(230, 230, 230, 0.9));
+    background-color: #f0f0f0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6'%3E%3Cpath d='M50 0 L100 25 v36.6 L50 86.6 0 61.6 V25 L50 0z' fill='none' stroke='%23C252E1' stroke-width='2'/%3E%3Cpath d='M50 2.5 L97.5 25 v34.1 L50 84.1 2.5 61.6 V25 L50 2.5z' fill='none' stroke='%23C252E1' stroke-width='1'/%3E%3C/svg%3E");
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ensure grid layout */
+    gap: 20px; /* Restore padding between cards */
     justify-items: center;
-    padding: 0 20px;
+    padding: 0 20px; /* Maintain internal padding */
     position: relative;
-    background: repeating-linear-gradient(
-        60deg,
-        transparent,
-        transparent 30px,
-        rgba(110, 203, 251, 0.1) 30px,
-        rgba(110, 203, 251, 0.1) 60px
-    ); /* Hexagonal comb background */
+    width: 100%; /* Ensure grid uses full container width */
 }
 
-body.light .project-grid {
-    background: repeating-linear-gradient(
-        60deg,
-        transparent,
-        transparent 30px,
-        rgba(194, 82, 225, 0.1) 30px,
-        rgba(194, 82, 225, 0.1) 60px
-    );
-}
-/* ... (keep all existing styles up to .project-grid) ... */
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    justify-items: center;
-    padding: 0 20px;
+/* Project card styles */
+.project-card {
     position: relative;
-    /* Remove infinite panGrid animation */
-    /* animation: panGrid 20s linear infinite; */
+    padding: 20px;
+    background: rgba(40, 40, 40, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Optional: Add a subtle hover rise effect instead */
+body.light .project-card {
+    background: rgba(250, 250, 250, 0.9);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 .project-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 20px rgba(110, 203, 251, 0.3);
 }
 
-/* Keep existing hexagonal and breathing styles unchanged for now */
 .project-card .hexagon {
     width: 60px;
     height: 69px;
@@ -917,8 +837,6 @@ body.light .project-card .hexagon::after {
     border-top: 34.5px solid #C252E1;
 }
 
-/* ... (keep remaining styles unchanged) ... */
-
 .project-card h3 {
     margin: 0 0 10px;
     color: #E0D9F6;
@@ -945,17 +863,76 @@ body.light .project-card p {
     color: rgba(0, 0, 0, 0.7);
 }
 
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(110, 203, 251, 0.3);
-}
-
 .project-card.active {
     background: linear-gradient(135deg, rgb(110, 203, 251), rgb(194, 82, 225));
     box-shadow: 0 0 15px rgba(110, 203, 251, 0.7);
 }
 
-@keyframes glow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Media Queries */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .chat-container,
+    .editor-preview {
+        width: 100%;
+        max-width: 600px;
+        order: 0;
+    }
+}
+
+/* Button icon styling */
+.btn-upload,
+.btn-send {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 0;
+}
+
+.btn-upload::after,
+.btn-send::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background: transparent;
+    width: 20px;
+    height: 20px;
+}
+
+.btn-upload::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236E6CFB' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.btn-send::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236E6CFB' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 3l18 8.5L3 20V3z' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 9v4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+body.light .btn-upload::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C252E1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+body.light .btn-send::after {
+    content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C252E1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 3l18 8.5L3 20V3z' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 9v4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.btn-upload:hover:not(.active),
+.btn-send:hover:not(.active) {
+    background: #2a2a2a !important;
+    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
+    transform: scale(1.05);
+}
+
+.btn-upload.active,
+.btn-send.active {
+    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225)) !important;
+    color: #E0D9F6 !important;
+    border: 1px solid rgb(194, 82, 225) !important;
+    box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
 }
