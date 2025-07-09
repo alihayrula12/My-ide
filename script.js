@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         '.btn-run': () => window.runCode(),
                         '.btn-collaborate': () => window.startCollaboration(),
                         '.btn-send': () => window.requestAI(),
-                        '#importProjectsButton': () => logToTerminal('Import Projects clicked (not implemented yet)'),
                         '.btn-upload': () => {
                             const fileInput = target.querySelector('input[type="file"]');
                             if (fileInput) fileInput.click();
@@ -52,7 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         event.preventDefault();
                         target.classList.add('active');
                         target.blur();
-                        handler();
+                        try {
+                            handler();
+                        } catch (error) {
+                            logToTerminal(`Button error: ${error.message}`);
+                        }
                         if (!target.classList.contains('btn-toggle-console')) {
                             setTimeout(() => target.classList.remove('active'), 300);
                         }
@@ -68,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         '.btn-run': () => window.runCode(),
                         '.btn-collaborate': () => window.startCollaboration(),
                         '.btn-send': () => window.requestAI(),
-                        '#importProjectsButton': () => logToTerminal('Import Projects clicked (not implemented yet)'),
                         '.btn-upload': () => {
                             const fileInput = target.querySelector('input[type="file"]');
                             if (fileInput) fileInput.click();
@@ -80,7 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         event.preventDefault();
                         target.classList.add('active');
                         target.blur();
-                        handler();
+                        try {
+                            handler();
+                        } catch (error) {
+                            logToTerminal(`Button error: ${error.message}`);
+                        }
                         if (!target.classList.contains('btn-toggle-console')) {
                             setTimeout(() => target.classList.remove('active'), 300);
                         }
@@ -101,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const languageSelect = document.getElementById('language');
                     const themeCheckbox = document.querySelector('.theme-checkbox');
 
-                    if (!terminal || !languageSelect || !themeCheckbox) {
+                    if (!terminal || !languageSelect || !themeCheckbox || !chatHistory || !preview || !previewPlaceholder) {
                         logToTerminal('Error: Required elements not found on create.html');
                         return;
                     }
@@ -135,13 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
                                     logToTerminal('Backend not available on iPad...');
                                 }
                             } catch (error) {
-                                logToTerminal('Error running code');
+                                logToTerminal(`Error running code: ${error.message}`);
                             } finally {
                                 if (runButton) {
                                     runButton.classList.remove('active', 'loading');
                                     runButton.disabled = false;
                                 }
                             }
+                        } else {
+                            logToTerminal('Editor, preview, or placeholder not available');
                         }
                     };
 
@@ -179,10 +187,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                 aiMessage.className = 'message ai-message';
                                 aiMessage.textContent = 'AI not available on iPad...';
                                 chatHistory.appendChild(aiMessage);
-                                logToTerminal('AI not available on iPad...');
+                                logToTerminal(`AI error: ${error.message}`);
                             }
                             chatHistory.scrollTop = chatHistory.scrollHeight;
                             document.getElementById('ai-prompt').value = '';
+                        } else {
+                            logToTerminal('Chat history not available');
                         }
                     };
 
@@ -234,6 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     }
                                 }, 300);
                             }
+                        } else {
+                            logToTerminal('Toggle console elements not available');
                         }
                     };
 
@@ -316,66 +328,102 @@ document.addEventListener('DOMContentLoaded', () => {
             // Projects page logic
             if (path.includes('projects.html')) {
                 try {
-                    const projectGrid = document.getElementById('projectGrid');
-                    const importProjectsButton = document.getElementById('importProjectsButton');
                     const projectContainer = document.querySelector('.project-container');
+                    const projectGrid = document.getElementById('projectGrid');
 
-                    if (!projectGrid) {
-                        logToTerminal('projectGrid element not found on projects.html');
+                    if (!projectContainer || !projectGrid) {
+                        logToTerminal('projectContainer or projectGrid element not found on projects.html');
                         return;
                     }
+
+                    // Wipe the project container clean
+                    projectContainer.innerHTML = '';
+                    projectContainer.appendChild(projectGrid);
 
                     let projects = [
                         { name: 'Project Alpha', description: 'AI-driven analytics tool' },
                         { name: 'Project Beta', description: 'Collaborative coding platform' },
                         { name: 'Project Gamma', description: 'Real-time data visualization' },
-                        { name: 'Project Delta', description: 'Automated testing suite' }
+                        { name: 'Project Delta', description: 'Automated testing suite' },
+                        { name: 'Project Epsilon', description: 'Machine learning prototype' },
+                        { name: 'Project Zeta', description: 'Data processing engine' },
+                        { name: 'Project Eta', description: 'User interface toolkit' },
+                        { name: 'Project Theta', description: 'Cloud deployment tool' },
+                        { name: 'Project Iota', description: 'Security framework' },
+                        { name: 'Project Kappa', description: 'Performance optimizer' },
+                        { name: 'Project Lambda', description: 'API gateway' },
+                        { name: 'Project Mu', description: 'Database manager' },
+                        { name: 'Project Nu', description: 'Network analyzer' },
+                        { name: 'Project Xi', description: 'Image processing tool' },
+                        { name: 'Project Omicron', description: 'Text analytics engine' },
+                        { name: 'Project Pi', description: 'Virtual assistant' },
+                        { name: 'Project Rho', description: 'Blockchain integrator' },
+                        { name: 'Project Sigma', description: 'Simulation platform' },
+                        { name: 'Project Tau', description: 'IoT connector' },
+                        { name: 'Project Upsilon', description: 'Voice recognition system' }
                     ];
 
                     const populateProjects = () => {
                         projectGrid.innerHTML = '';
-                        if (projects.length === 0) {
-                            projectContainer.classList.add('no-projects');
-                            const addProject = document.createElement('div');
-                            addProject.className = 'add-project';
-                            addProject.innerHTML = '+<svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>';
-                            addProject.addEventListener('click', () => {
-                                const name = prompt('Enter project name:');
-                                if (name) {
-                                    projects.push({ name });
-                                    projectContainer.classList.remove('no-projects');
-                                    populateProjects();
-                                }
-                            });
-                            const addText = document.createElement('div');
-                            addText.className = 'add-project-text';
-                            addText.textContent = 'Create your first project!';
-                            projectGrid.appendChild(addProject);
-                            projectGrid.appendChild(addText);
-                        } else {
-                            projectContainer.classList.remove('no-projects');
-                            projects.forEach((project, index) => {
-                                const card = document.createElement('div');
-                                card.className = 'project-card';
-                                card.innerHTML = `<h3>${project.name}</h3><svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>`;
-                                card.addEventListener('click', () => {
-                                    card.classList.toggle('active');
-                                    logToTerminal(`Selected: ${project.name}`);
-                                    window.location.href = `project.html?name=${encodeURIComponent(project.name)}`;
-                                });
-                                card.addEventListener('mouseover', () => console.log('Hover detected on', card));
-                                projectGrid.appendChild(card);
-                            });
+                        const totalSlots = Math.ceil((projects.length + 1) / 5) * 5; // 25 slots for 5 columns
+                        projectContainer.classList.remove('no-projects');
 
-                            const cards = projectGrid.querySelectorAll('.project-card');
-                            cards.forEach((card, index) => {
-                                if (index % 2 === 1) card.style.marginTop = '78px';
-                                projectGrid.style.height = Math.ceil(cards.length / 6) * 156 + 'px';
+                        // Populate project cards
+                        projects.forEach((project, index) => {
+                            const card = document.createElement('div');
+                            card.className = 'project-card';
+                            card.innerHTML = `<h3>${project.name}</h3><svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>`;
+                            card.addEventListener('click', () => {
+                                card.classList.toggle('active');
+                                logToTerminal(`Selected: ${project.name}`);
+                                window.location.href = `project.html?name=${encodeURIComponent(project.name)}`;
                             });
+                            card.addEventListener('mouseover', () => console.log('Hover detected on', card));
+                            projectGrid.appendChild(card);
+                        });
+
+                        // Add plus hexagon button
+                        const addProject = document.createElement('div');
+                        addProject.className = 'add-project';
+                        addProject.innerHTML = '+<svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>';
+                        addProject.addEventListener('click', () => {
+                            const name = prompt('Enter project name:');
+                            if (name) {
+                                projects.push({ name });
+                                populateProjects();
+                            } else {
+                                window.location.href = 'create.html';
+                            }
+                        });
+                        projectGrid.appendChild(addProject);
+
+                        // Add empty placeholder cards
+                        const filledSlots = projects.length + 1;
+                        for (let i = filledSlots; i < totalSlots; i++) {
+                            const emptyProject = document.createElement('div');
+                            emptyProject.className = 'empty-project';
+                            emptyProject.innerHTML = '<svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>';
+                            projectGrid.appendChild(emptyProject);
                         }
+
+                        // Height calculation for 5 columns
+                        const rows = Math.ceil(totalSlots / 5);
+                        projectGrid.style.height = (rows * 166) + 'px'; // 156px height + 10px gap per row
                     };
 
                     populateProjects();
+
+                    // Add import projects button outside the project container, only if not already present
+                    const existingButton = document.querySelector('.import-projects-button');
+                    if (!existingButton) {
+                        const button = document.createElement('button');
+                        button.className = 'import-projects-button';
+                        button.textContent = 'Import Projects';
+                        button.addEventListener('click', () => logToTerminal('Import Projects clicked (not implemented yet)'));
+                        if (projectContainer.parentElement) {
+                            projectContainer.parentElement.insertAdjacentElement('afterend', button);
+                        }
+                    }
                 } catch (error) {
                     logToTerminal(`Error in projects.html logic: ${error.message}`);
                 }

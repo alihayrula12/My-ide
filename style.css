@@ -730,10 +730,10 @@ body.light .form-group input {
 .project-container {
     width: 100%;
     max-width: 1200px;
-    padding: 24px;
-    height: 692px;
+    padding: 24px; /* Even padding on all sides */
+    height: 692px; /* Fixed height with overflow */
     max-height: 692px;
-    overflow-y: auto;
+    overflow-y: auto; /* Enable vertical scrolling */
     background-color: #1a1a1a;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -741,6 +741,32 @@ body.light .form-group input {
     overflow: hidden;
     display: flex;
     justify-content: center; /* Center the grid */
+    margin-bottom: 20px; /* Space for the new button */
+}
+
+.project-container.no-projects {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #888;
+}
+
+.project-container::-webkit-scrollbar {
+    width: 8px; /* Slim scrollbar */
+}
+
+.project-container::-webkit-scrollbar-track {
+    background: transparent; /* Transparent track */
+}
+
+.project-container::-webkit-scrollbar-thumb {
+    background-color: #444; /* Dark gray for dark mode */
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.project-container::-webkit-scrollbar-thumb:hover {
+    background-color: #666; /* Slightly lighter on hover */
 }
 
 body.light .project-container {
@@ -748,23 +774,28 @@ body.light .project-container {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+body.light .project-container::-webkit-scrollbar-thumb {
+    background-color: #bbb; /* Light gray for light mode */
+}
+
+body.light .project-container::-webkit-scrollbar-thumb:hover {
+    background-color: #999; /* Slightly darker on hover */
+}
+
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(6, 180px);
-    grid-auto-rows: 156px;
-    gap: 10px; /* Maintain spacing */
-    justify-content: flex-start; /* Align to left for padding control */
-    padding-left: 24px; /* Match container's left padding */
-    padding-right: 24px; /* Match container's right padding for symmetry */
+    grid-template-columns: repeat(5, 180px); /* 5 cards per row */
+    grid-auto-rows: 156px; /* Match card height */
+    gap: 10px; /* Consistent spacing between cards */
+    justify-content: flex-start; /* Align to left */
+    padding: 0; /* No additional padding within grid */
     position: relative;
-    height: auto;
-    min-height: 312px;
+    height: auto; /* Dynamic height */
+    min-height: 156px; /* Minimum height for at least one row */
+    margin: 0; /* No margins */
 }
 
-.project-grid > *:nth-child(odd) {
-    margin-top: 78px; /* Half height for stagger */
-}
-
+/* Project Card Styles */
 .project-card {
     position: relative;
     width: 180px;
@@ -787,25 +818,25 @@ body.light .project-container {
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Allow clicks to pass through to the card */
-    z-index: 0; /* Below content */
+    pointer-events: none;
+    z-index: 0;
 }
 
 .project-card svg path {
     fill: none;
-    stroke: #444; /* Default gray outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: #444;
+    stroke-width: 8;
     transition: stroke 0.3s ease;
 }
 
 .project-card:hover {
-    transform: translateY(-5px); /* Raise effect */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .project-card:hover svg path {
-    stroke: rgb(110, 203, 251); /* Light blue outline on hover */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: rgb(110, 203, 251);
+    stroke-width: 8;
 }
 
 .project-card.active {
@@ -814,8 +845,8 @@ body.light .project-container {
 }
 
 .project-card.active svg path {
-    stroke: rgb(194, 82, 225); /* Active state outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: rgb(194, 82, 225);
+    stroke-width: 8;
 }
 
 .project-card h3 {
@@ -836,51 +867,46 @@ body.light .project-card {
 }
 
 body.light .project-card svg path {
-    stroke: #aaa; /* Light theme outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: #aaa;
+    stroke-width: 8;
 }
 
 body.light .project-card:hover svg path {
-    stroke: #586AE2; /* Light blue outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: #586AE2;
+    stroke-width: 8;
+}
+
+body.light .project-card.active {
+    background: linear-gradient(to right, #586AE2, #C252E1);
 }
 
 body.light .project-card.active svg path {
-    stroke: #C252E1; /* Active state outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: #C252E1;
+    stroke-width: 8;
 }
 
 body.light .project-card h3 {
     color: #333;
 }
 
-/* No-project state */
-.no-projects {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.add-project {
-    width: 200px;
-    height: 173px;
-    background: #333;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon shape */
+/* End Cap and Empty Hexagon Styles */
+.add-project, .empty-project {
+    width: 180px;
+    height: 156px;
+    background: #1a2a44;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 48px;
     color: #666;
     cursor: pointer;
-    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     z-index: 1;
 }
 
-.add-project svg {
+.add-project svg, .empty-project svg {
     position: absolute;
     top: 0;
     left: 0;
@@ -890,43 +916,49 @@ body.light .project-card h3 {
     z-index: 0;
 }
 
-.add-project svg path {
+.add-project svg path, .empty-project svg path {
     fill: none;
-    stroke: #444; /* Default gray outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: #444;
+    stroke-width: 8;
     transition: stroke 0.3s ease;
 }
 
 .add-project:hover {
-    color: rgb(110, 203, 251);
-    transform: translateY(-5px); /* Raise effect */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .add-project:hover svg path {
-    stroke: rgb(110, 203, 251); /* Light blue outline on hover */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: rgb(110, 203, 251);
+    stroke-width: 8;
 }
 
 .add-project-text {
-    color: #E0D9F6;
-    font-size: 18px;
-    text-align: center;
+    display: none;
 }
 
-body.light .add-project {
-    background: #ddd;
+.empty-project {
+    pointer-events: none;
+}
+
+.empty-project:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+body.light .add-project, body.light .empty-project {
+    background: #d0d0e0;
     color: #999;
 }
 
-body.light .add-project svg path {
-    stroke: #aaa; /* Light theme outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+body.light .add-project svg path, body.light .empty-project svg path {
+    stroke: #aaa;
+    stroke-width: 8;
 }
 
 body.light .add-project:hover svg path {
-    stroke: #586AE2; /* Light blue outline */
-    stroke-width: 8; /* Increased thickness from 4px to 8px */
+    stroke: #586AE2;
+    stroke-width: 8;
 }
 
 /* Button icon styling */
@@ -996,4 +1028,49 @@ body.light .btn-send::after {
         max-width: 600px;
         order: 0;
     }
+}
+
+/* New Pill-Style Import Button */
+.import-projects-button {
+    display: block;
+    width: 200px;
+    padding: 12px 24px;
+    margin: 0 auto;
+    background-color: transparent;
+    color: rgb(194, 82, 225); /* Magenta text */
+    border: 2px solid rgb(194, 82, 225); /* Magenta pill outline */
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.import-projects-button:hover {
+    color: rgb(110, 203, 251); /* Lighter magenta on hover */
+    border-color: rgb(110, 203, 251);
+    transform: translateY(-2px);
+}
+
+.import-projects-button:active {
+    transform: translateY(0);
+    color: #C252E1; /* Darker magenta on click */
+    border-color: #C252E1;
+}
+
+body.light .import-projects-button {
+    color: rgb(194, 82, 225);
+    border-color: rgb(194, 82, 225);
+}
+
+body.light .import-projects-button:hover {
+    color: rgb(110, 203, 251);
+    border-color: rgb(110, 203, 251);
+}
+
+body.light .import-projects-button:active {
+    color: #C252E1;
+    border-color: #C252E1;
 }
