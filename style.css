@@ -795,6 +795,44 @@ body.light .project-container::-webkit-scrollbar-thumb:hover {
     margin: 0; /* No margins */
 }
 
+.project-container {
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 80vh; /* Adjustable based on your layout */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #4a90e2 #1a1a1a; /* Theme-matched: light blue track, dark thumb */
+}
+
+.project-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.project-container::-webkit-scrollbar-track {
+    background: #1a1a1a; /* Dark theme track */
+}
+
+.project-container::-webkit-scrollbar-thumb {
+    background-color: #4a90e2; /* Light blue thumb */
+    border-radius: 4px;
+    border: 2px solid #1a1a1a; /* Match track */
+}
+
+body.light .project-container {
+    scrollbar-color: #4a90e2 #f0f0f0; /* Light theme: same thumb, light track */
+}
+
+body.light .project-container::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Light theme track */
+}
+
+body.light .project-container::-webkit-scrollbar-thumb {
+    border: 2px solid #f0f0f0; /* Match light track */
+}
+
+/* Ensure smooth scrolling */
+.project-container {
+    scroll-behavior: smooth;
+}
+
 /* Project Card Styles */
 .project-card {
     position: relative;
