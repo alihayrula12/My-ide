@@ -7,7 +7,7 @@
 }
 
 body {
-    background: linear-gradient(180deg, #121212 0%, #1a1a1a 100%);
+    background: linear-gradient(180deg, #000000 0%, #1a2a44 100%);
     color: #E0D9F6;
     display: flex;
     justify-content: center;
@@ -314,7 +314,7 @@ textarea:focus {
 }
 
 .btn:focus {
-    outline: 2px solid rgb(110, 251);
+    outline: 2px solid rgb(110, 203, 251);
     outline-offset: 2px;
 }
 
@@ -734,153 +734,191 @@ body.light .form-group input {
     height: 692px;
     max-height: 692px;
     overflow-y: auto;
-    background-color: #1a1a1a; /* Base dark color */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6'%3E%3Cpath d='M50 0 L100 25 v36.6 L50 86.6 0 61.6 V25 L50 0z' fill='none' stroke='%236ECBFB' stroke-width='2'/%3E%3Cpath d='M50 2.5 L97.5 25 v34.1 L50 84.1 2.5 61.6 V25 L50 2.5z' fill='none' stroke='%236ECBFB' stroke-width='1'/%3E%3C/svg%3E");
-    background-size: 200px 173px; /* Scaled up for ~6 hexagons per row */
-    background-repeat: repeat;
+    background-color: #1a1a1a;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center; /* Center the grid */
 }
 
 body.light .project-container {
     background-color: #f0f0f0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6'%3E%3Cpath d='M50 0 L100 25 v36.6 L50 86.6 0 61.6 V25 L50 0z' fill='none' stroke='%23C252E1' stroke-width='2'/%3E%3Cpath d='M50 2.5 L97.5 25 v34.1 L50 84.1 2.5 61.6 V25 L50 2.5z' fill='none' stroke='%23C252E1' stroke-width='1'/%3E%3C/svg%3E");
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ensure grid layout */
-    gap: 20px; /* Restore padding between cards */
-    justify-items: center;
-    padding: 0 20px; /* Maintain internal padding */
+    grid-template-columns: repeat(6, 180px);
+    grid-auto-rows: 156px;
+    gap: 10px; /* Maintain spacing */
+    justify-content: center; /* Center items */
+    padding: 0;
     position: relative;
-    width: 100%; /* Ensure grid uses full container width */
+    height: auto;
+    min-height: 312px;
 }
 
-/* Project card styles */
+.project-grid > *:nth-child(odd) {
+    margin-top: 78px; /* Half height for stagger */
+}
+
 .project-card {
     position: relative;
-    padding: 20px;
-    background: rgba(40, 40, 40, 0.9);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
+    width: 180px;
+    height: 156px;
+    background: #333;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon shape */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
 }
 
-body.light .project-card {
-    background: rgba(250, 250, 250, 0.9);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.project-card svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through to the card */
+    z-index: 0; /* Below content */
+}
+
+.project-card svg path {
+    fill: none;
+    stroke: #444; /* Default gray outline */
+    stroke-width: 2;
+    transition: stroke 0.3s ease;
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(110, 203, 251, 0.3);
+    transform: translateY(-5px); /* Raise effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Shadow on hover */
 }
 
-.project-card .hexagon {
-    width: 60px;
-    height: 69px;
-    background: linear-gradient(135deg, #6ECBFB, #4A90E2);
-    position: relative;
-    margin: 0 auto 15px;
-    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 18px;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-    animation: hexagonGlow 3s infinite alternate;
+.project-card:hover svg path {
+    stroke: rgb(110, 203, 251); /* Light blue outline on hover */
 }
 
-body.light .project-card .hexagon {
-    background: linear-gradient(135deg, #C252E1, #9B59B6);
+.project-card.active {
+    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225));
+    box-shadow: 0 0 15px rgba(110, 203, 251, 0.7);
 }
 
-@keyframes hexagonGlow {
-    0% { filter: brightness(1); }
-    100% { filter: brightness(1.3); }
-}
-
-.project-card .hexagon::before,
-.project-card .hexagon::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-left: 30px solid transparent;
-    border-right: 30px solid transparent;
-}
-
-.project-card .hexagon::before {
-    bottom: 100%;
-    border-bottom: 34.5px solid #6ECBFB;
-}
-
-body.light .project-card .hexagon::before {
-    border-bottom: 34.5px solid #C252E1;
-}
-
-.project-card .hexagon::after {
-    top: 100%;
-    border-top: 34.5px solid #6ECBFB;
-}
-
-body.light .project-card .hexagon::after {
-    border-top: 34.5px solid #C252E1;
+.project-card.active svg path {
+    stroke: rgb(194, 82, 225); /* Active state outline */
 }
 
 .project-card h3 {
     margin: 0 0 10px;
     color: #E0D9F6;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
-    z-index: 1;
+    z-index: 2;
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+}
+
+body.light .project-card {
+    background: #ddd;
+}
+
+body.light .project-card svg path {
+    stroke: #aaa; /* Light theme outline */
+}
+
+body.light .project-card:hover svg path {
+    stroke: #586AE2; /* Light blue outline */
+}
+
+body.light .project-card.active svg path {
+    stroke: #C252E1; /* Active state outline */
 }
 
 body.light .project-card h3 {
     color: #333;
 }
 
-.project-card p {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    text-align: center;
-    z-index: 1;
+/* No-project state */
+.no-projects {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-project {
+    width: 200px;
+    height: 173px;
+    background: #333;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
+    z-index: 1;
 }
 
-body.light .project-card p {
-    color: rgba(0, 0, 0, 0.7);
+.add-project svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
 }
 
-.project-card.active {
-    background: linear-gradient(135deg, rgb(110, 203, 251), rgb(194, 82, 225));
-    box-shadow: 0 0 15px rgba(110, 203, 251, 0.7);
+.add-project svg path {
+    fill: none;
+    stroke: #444; /* Default gray outline */
+    stroke-width: 2;
+    transition: stroke 0.3s ease;
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-        align-items: center;
-    }
-    .chat-container,
-    .editor-preview {
-        width: 100%;
-        max-width: 600px;
-        order: 0;
-    }
+.add-project:hover {
+    color: rgb(110, 203, 251);
+    transform: translateY(-5px); /* Raise effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Shadow on hover */
 }
+
+.add-project:hover svg path {
+    stroke: rgb(110, 203, 251); /* Light blue outline on hover */
+}
+
+.add-project-text {
+    color: #E0D9F6;
+    font-size: 18px;
+    text-align: center;
+}
+
+body.light .add-project {
+    background: #ddd;
+    color: #999;
+}
+
+body.light .add-project svg path {
+    stroke: #aaa; /* Light theme outline */
+}
+
+body.light .add-project:hover svg path {
+    stroke: #586AE2; /* Light blue outline */
+}}
 
 /* Button icon styling */
 .btn-upload,
@@ -935,4 +973,18 @@ body.light .btn-send::after {
     color: #E0D9F6 !important;
     border: 1px solid rgb(194, 82, 225) !important;
     box-shadow: 0 0 12px rgba(110, 203, 251, 0.4) !important;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .chat-container,
+    .editor-preview {
+        width: 100%;
+        max-width: 600px;
+        order: 0;
+    }
 }
