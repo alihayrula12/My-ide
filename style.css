@@ -753,8 +753,9 @@ body.light .project-container {
     grid-template-columns: repeat(6, 180px);
     grid-auto-rows: 156px;
     gap: 10px; /* Maintain spacing */
-    justify-content: center; /* Center items */
-    padding: 0;
+    justify-content: flex-start; /* Align to left for padding control */
+    padding-left: 24px; /* Match container's left padding */
+    padding-right: 24px; /* Match container's right padding for symmetry */
     position: relative;
     height: auto;
     min-height: 312px;
@@ -793,7 +794,7 @@ body.light .project-container {
 .project-card svg path {
     fill: none;
     stroke: #444; /* Default gray outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
     transition: stroke 0.3s ease;
 }
 
@@ -804,7 +805,7 @@ body.light .project-container {
 
 .project-card:hover svg path {
     stroke: rgb(110, 203, 251); /* Light blue outline on hover */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 .project-card.active {
@@ -814,7 +815,7 @@ body.light .project-container {
 
 .project-card.active svg path {
     stroke: rgb(194, 82, 225); /* Active state outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 .project-card h3 {
@@ -836,17 +837,17 @@ body.light .project-card {
 
 body.light .project-card svg path {
     stroke: #aaa; /* Light theme outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 body.light .project-card:hover svg path {
     stroke: #586AE2; /* Light blue outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 body.light .project-card.active svg path {
     stroke: #C252E1; /* Active state outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 body.light .project-card h3 {
@@ -892,7 +893,7 @@ body.light .project-card h3 {
 .add-project svg path {
     fill: none;
     stroke: #444; /* Default gray outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
     transition: stroke 0.3s ease;
 }
 
@@ -904,7 +905,7 @@ body.light .project-card h3 {
 
 .add-project:hover svg path {
     stroke: rgb(110, 203, 251); /* Light blue outline on hover */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 .add-project-text {
@@ -920,12 +921,12 @@ body.light .add-project {
 
 body.light .add-project svg path {
     stroke: #aaa; /* Light theme outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 body.light .add-project:hover svg path {
     stroke: #586AE2; /* Light blue outline */
-    stroke-width: 4; /* Increased thickness */
+    stroke-width: 8; /* Increased thickness from 4px to 8px */
 }
 
 /* Button icon styling */
