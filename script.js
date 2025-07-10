@@ -12,6 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(message);
     };
 
+    // SVG Namespace Reference (W3C Documentation)
+    const svgNamespaceInfo = {
+        namespace: 'http://www.w3.org/2000/svg',
+        description: 'An XML namespace defined in the Scalable Vector Graphics (SVG) 1.0 Specification, extended by SVG 1.1, 1.2, and 2. Mutable by the W3C SVG Working Group via Technical Reports.',
+        specLink: 'https://www.w3.org/TR/SVG/',
+        overviewLink: 'https://www.w3.org/Graphics/SVG/',
+        xmlSpec: 'https://www.w3.org/TR/xml/',
+        namespaceSpec: 'https://www.w3.org/TR/xml-names/',
+        lastModified: '2025/03/14 23:44:06'
+    };
+
     // Button recreations with direct listeners
     const setupButtons = () => {
         // Create.html buttons
@@ -211,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 projects.forEach((project) => {
                     const card = document.createElement('div');
                     card.className = 'project-card';
-                    card.innerHTML = `<h3>${project.name}</h3><svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>`;
+                    card.innerHTML = `<h3>${project.name}</h3><svg viewBox="0 0 180 156" xmlns="http://www.w3.org/2000/svg"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>`;
                     card.addEventListener('click', () => {
                         card.classList.toggle('active');
                         logToTerminal(`Selected: ${project.name}`);
@@ -221,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const addProject = document.createElement('div');
                 addProject.className = 'add-project';
-                addProject.innerHTML = '+<svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>';
+                addProject.innerHTML = '+<svg viewBox="0 0 180 156" xmlns="http://www.w3.org/2000/svg"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>';
                 addProject.addEventListener('click', () => {
                     const name = prompt('Enter project name:');
                     if (name) {
@@ -235,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (let i = projects.length + 1; i < totalSlots; i++) {
                     const emptyProject = document.createElement('div');
                     emptyProject.className = 'empty-project';
-                    emptyProject.innerHTML = '<svg viewBox="0 0 180 156"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>';
+                    emptyProject.innerHTML = '<svg viewBox="0 0 180 156" xmlns="http://www.w3.org/2000/svg"><path d="M90 0 L180 39 L180 117 L90 156 L0 117 L0 39 Z" /></svg>';
                     projectGrid.appendChild(emptyProject);
                 }
                 projectGrid.style.height = `${Math.ceil(totalSlots / 5) * 166}px`;

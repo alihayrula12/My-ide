@@ -734,7 +734,7 @@ body.light .form-group input {
     height: 692px; /* Fixed height with overflow */
     max-height: 692px;
     overflow-y: auto; /* Enable vertical scrolling */
-    background-color: #1a1a1a;
+    background-color: rgb(7, 10, 16); /* Darker background */
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -756,7 +756,7 @@ body.light .form-group input {
 }
 
 .project-container::-webkit-scrollbar-track {
-    background: transparent; /* Transparent track */
+    background: rgb(7, 10, 16); /* Match container background */
 }
 
 .project-container::-webkit-scrollbar-thumb {
@@ -770,7 +770,7 @@ body.light .form-group input {
 }
 
 body.light .project-container {
-    background-color: #f0f0f0;
+    background-color: rgb(7, 10, 16); /* Keep darker background in light mode */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -793,13 +793,14 @@ body.light .project-container::-webkit-scrollbar-thumb:hover {
     height: auto; /* Dynamic height */
     min-height: 156px; /* Minimum height for at least one row */
     margin: 0; /* No margins */
+    background-color: transparent; /* Ensure no override */
 }
 
 .project-container {
     overflow-y: auto; /* Enable vertical scrolling */
     max-height: 80vh; /* Adjustable based on your layout */
     scrollbar-width: thin; /* Firefox */
-    scrollbar-color: #4a90e2 #1a1a1a; /* Theme-matched: light blue track, dark thumb */
+    scrollbar-color: #4a90e2 rgb(7, 10, 16); /* Updated to match new background */
 }
 
 .project-container::-webkit-scrollbar {
@@ -807,13 +808,13 @@ body.light .project-container::-webkit-scrollbar-thumb:hover {
 }
 
 .project-container::-webkit-scrollbar-track {
-    background: #1a1a1a; /* Dark theme track */
+    background: rgb(7, 10, 16); /* Dark theme track */
 }
 
 .project-container::-webkit-scrollbar-thumb {
     background-color: #4a90e2; /* Light blue thumb */
     border-radius: 4px;
-    border: 2px solid #1a1a1a; /* Match track */
+    border: 2px solid rgb(7, 10, 16); /* Match track */
 }
 
 body.light .project-container {
@@ -838,7 +839,7 @@ body.light .project-container::-webkit-scrollbar-thumb {
     position: relative;
     width: 180px;
     height: 156px;
-    background: #333;
+    background: #333 !important; /* Default gray, overridden by .active */
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon shape */
     display: flex;
     flex-direction: column;
@@ -873,18 +874,40 @@ body.light .project-container::-webkit-scrollbar-thumb {
 }
 
 .project-card:hover svg path {
-    stroke: rgb(110, 203, 251);
+    stroke: rgb(110, 203, 251); /* Light sky blue on hover */
     stroke-width: 8;
 }
 
-.project-card.active {
-    background: linear-gradient(to right, rgb(110, 203, 251), rgb(194, 82, 225));
-    box-shadow: 0 0 15px rgba(110, 203, 251, 0.7);
+/* Increased specificity for active cards */
+.project-grid .project-card.active {
+    background: rgb(14, 21, 37) !important; /* Background color change to blue */
 }
 
-.project-card.active svg path {
-    stroke: rgb(194, 82, 225);
+.project-grid .project-card.active svg {
+    z-index: 2; /* Ensure it layers above other elements */
+}
+
+.project-grid .project-card.active svg path.outer {
+    fill: none;
+    stroke: rgb(55, 82, 101) !important; /* Default blue outline */
     stroke-width: 8;
+    transition: stroke 0.3s ease;
+}
+
+.project-grid .project-card.active svg path.inner {
+    fill: none;
+    stroke: rgb(194, 82, 225) !important; /* Magenta secondary outline */
+    stroke-width: 2;
+    transform: translate(8px, 8px); /* Position inside the 8px outer outline */
+    transition: stroke 0.3s ease;
+}
+
+.project-grid .project-card.active:hover svg path.outer {
+    stroke: rgb(110, 203, 251) !important; /* Light sky blue on hover */
+}
+
+.project-grid .project-card.active h3 {
+    color: rgb(194, 82, 225) !important; /* Magenta text */
 }
 
 .project-card h3 {
@@ -892,7 +915,7 @@ body.light .project-container::-webkit-scrollbar-thumb {
     color: #E0D9F6;
     font-size: 16px;
     text-align: center;
-    z-index: 2;
+    z-index: 3;
     position: relative;
     white-space: nowrap;
     overflow: hidden;
@@ -914,13 +937,27 @@ body.light .project-card:hover svg path {
     stroke-width: 8;
 }
 
-body.light .project-card.active {
-    background: linear-gradient(to right, #586AE2, #C252E1);
+body.light .project-grid .project-card.active {
+    background: rgb(14, 21, 37) !important; /* Keep new background in light mode */
 }
 
-body.light .project-card.active svg path {
-    stroke: #C252E1;
+body.light .project-grid .project-card.active svg path.outer {
+    stroke: rgb(55, 82, 101) !important; /* Match empty project cards */
     stroke-width: 8;
+}
+
+body.light .project-grid .project-card.active svg path.inner {
+    stroke: rgb(194, 82, 225) !important; /* Magenta in light mode */
+    stroke-width: 2;
+    transform: translate(8px, 8px);
+}
+
+body.light .project-grid .project-card.active:hover svg path.outer {
+    stroke: #586AE2 !important; /* Light sky blue in light mode */
+}
+
+body.light .project-grid .project-card.active h3 {
+    color: #C252E1 !important; /* Magenta text in light mode */
 }
 
 body.light .project-card h3 {
@@ -928,10 +965,11 @@ body.light .project-card h3 {
 }
 
 /* End Cap and Empty Hexagon Styles */
-.add-project, .empty-project {
+.add-project,
+.empty-project {
     width: 180px;
     height: 156px;
-    background: #1a2a44;
+    background: rgb(11, 16, 26); /* Darker background */
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     display: flex;
     align-items: center;
@@ -944,7 +982,8 @@ body.light .project-card h3 {
     z-index: 1;
 }
 
-.add-project svg, .empty-project svg {
+.add-project svg,
+.empty-project svg {
     position: absolute;
     top: 0;
     left: 0;
@@ -954,10 +993,11 @@ body.light .project-card h3 {
     z-index: 0;
 }
 
-.add-project svg path, .empty-project svg path {
+.add-project svg path,
+.empty-project svg path {
     fill: none;
-    stroke: #444;
-    stroke-width: 8;
+    stroke: rgb(55, 82, 101); /* New default outline color */
+    stroke-width: 4; /* Reduced from 8px to 4px */
     transition: stroke 0.3s ease;
 }
 
@@ -967,8 +1007,8 @@ body.light .project-card h3 {
 }
 
 .add-project:hover svg path {
-    stroke: rgb(110, 203, 251);
-    stroke-width: 8;
+    stroke: rgb(194, 82, 225); /* Magenta on hover */
+    stroke-width: 4;
 }
 
 .add-project-text {
@@ -984,19 +1024,21 @@ body.light .project-card h3 {
     box-shadow: none;
 }
 
-body.light .add-project, body.light .empty-project {
-    background: #d0d0e0;
+body.light .add-project,
+body.light .empty-project {
+    background: rgb(11, 16, 26); /* Keep darker background in light mode */
     color: #999;
 }
 
-body.light .add-project svg path, body.light .empty-project svg path {
-    stroke: #aaa;
-    stroke-width: 8;
+body.light .add-project svg path,
+body.light .empty-project svg path {
+    stroke: rgb(55, 82, 101); /* New default outline color */
+    stroke-width: 4;
 }
 
 body.light .add-project:hover svg path {
-    stroke: #586AE2;
-    stroke-width: 8;
+    stroke: #C252E1; /* Magenta in light mode on hover */
+    stroke-width: 4;
 }
 
 /* Button icon styling */
