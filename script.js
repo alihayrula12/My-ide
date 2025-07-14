@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Script loaded successfully');
+
     const logToTerminal = (message) => {
         const terminal = document.getElementById('terminal');
         if (terminal) {
@@ -12,20 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(message);
     };
 
-    // SVG Namespace Reference (W3C Documentation)
-    const svgNamespaceInfo = {
-        namespace: 'http://www.w3.org/2000/svg',
-        description: 'An XML namespace defined in the Scalable Vector Graphics (SVG) 1.0 Specification, extended by SVG 1.1, 1.2, and 2. Mutable by the W3C SVG Working Group via Technical Reports.',
-        specLink: 'https://www.w3.org/TR/SVG/',
-        overviewLink: 'https://www.w3.org/Graphics/SVG/',
-        xmlSpec: 'https://www.w3.org/TR/xml/',
-        namespaceSpec: 'https://www.w3.org/TR/xml-names/',
-        lastModified: '2025/03/14 23:44:06'
-    };
-
-    // Button recreations with direct listeners
     const setupButtons = () => {
-        // Create.html buttons
         const buttons = [
             { selector: '.btn-upload', action: () => {
                 const fileInput = document.createElement('input');
@@ -52,16 +41,62 @@ document.addEventListener('DOMContentLoaded', () => {
                         typingIndicator.innerHTML = '<span></span><span></span><span></span> <span>replicat’s thinking</span>';
                         chatHistory.appendChild(typingIndicator);
                         chatHistory.scrollTop = chatHistory.scrollHeight;
-                        setTimeout(() => {
-                            typingIndicator.remove();
-                            const aiMessage = document.createElement('div');
-                            aiMessage.className = 'message ai-message';
-                            aiMessage.textContent = 'Mock AI response';
-                            chatHistory.appendChild(aiMessage);
+
+                        const displayThought = (message) => {
+                            const thoughtMessage = document.createElement('div');
+                            thoughtMessage.className = 'message ai-thought';
+                            thoughtMessage.textContent = message;
+                            chatHistory.appendChild(thoughtMessage);
                             chatHistory.scrollTop = chatHistory.scrollHeight;
-                            aiPrompt.value = '';
-                            logToTerminal('AI response sent');
-                        }, 1000);
+                            setTimeout(() => thoughtMessage.remove(), 3000);
+                        };
+
+                        const processAIResponse = () => {
+                            let response = '';
+                            const thoughts = [];
+                            if (prompt.toLowerCase().includes('clarify')) {
+                                thoughts.push('I need to reanalyze the structure of the prompt...');
+                                setTimeout(() => {
+                                    const clarification = prompt('Please provide more details:');
+                                    if (clarification) {
+                                        thoughts.push('Now that that’s clarified, I should refine the logic...');
+                                        response = `Clarified response based on: ${clarification}`;
+                                    } else {
+                                        thoughts.push('No clarification provided, proceeding with default analysis...');
+                                        response = 'No clarification provided, using default response.';
+                                    }
+                                }, 1000);
+                            } else if (prompt.toLowerCase().includes('code')) {
+                                thoughts.push('I need to evaluate the code structure...');
+                                thoughts.push('Now that that’s done, I should optimize the syntax...');
+                                response = 'Mock code response generated.';
+                            } else if (prompt.toLowerCase().includes('data')) {
+                                thoughts.push('I need to build a dataset model...');
+                                thoughts.push('Now that that’s done, I should analyze the trends...');
+                                response = 'Mock data analysis response.';
+                            } else {
+                                thoughts.push('I need to interpret the general intent...');
+                                thoughts.push('Now that that’s done, I should formulate a response...');
+                                response = 'Mock AI response';
+                            }
+
+                            thoughts.forEach((thought, index) => {
+                                setTimeout(() => displayThought(thought), index * 1000);
+                            });
+
+                            setTimeout(() => {
+                                typingIndicator.remove();
+                                const aiMessage = document.createElement('div');
+                                aiMessage.className = 'message ai-message';
+                                aiMessage.textContent = response;
+                                chatHistory.appendChild(aiMessage);
+                                chatHistory.scrollTop = chatHistory.scrollHeight;
+                                aiPrompt.value = '';
+                                logToTerminal('AI response sent');
+                            }, thoughts.length * 1000 + 1000);
+                        };
+
+                        processAIResponse();
                     } else {
                         logToTerminal('No prompt entered');
                     }
@@ -144,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Navigation buttons
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -168,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Initial active nav item
         navItems.forEach(item => {
             const itemPage = item.getAttribute('data-nav');
             if (itemPage && window.location.pathname.includes(itemPage + '.html')) {
@@ -177,21 +210,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Run setup after DOM is ready
     setupButtons();
 
-    // Theme toggle
-    const themeCheckbox = document.querySelector('.theme-checkbox');
-    if (themeCheckbox) {
-        themeCheckbox.addEventListener('change', () => {
-            const isLight = themeCheckbox.checked;
-            document.body.classList.toggle('light', isLight);
-            themeCheckbox.setAttribute('data-theme', isLight ? 'light' : 'dark');
-            logToTerminal(`Switched to ${isLight ? 'light' : 'dark'} theme`);
+    // Theme toggle initialization with error handling
+    const themeCheckboxes = document.querySelectorAll('.theme-checkbox');
+    if (themeCheckboxes.length > 0) {
+        console.log('Theme checkboxes found, initializing...');
+        const isLight = document.body.classList.contains('light');
+        themeCheckboxes.forEach(checkbox => {
+            checkbox.checked = isLight;
+            checkbox.setAttribute('data-theme', isLight ? 'light' : 'dark');
+            checkbox.addEventListener('change', () => {
+                const isLight = checkbox.checked;
+                document.body.classList.toggle('light', isLight);
+                themeCheckboxes.forEach(cb => cb.setAttribute('data-theme', isLight ? 'light' : 'dark'));
+                logToTerminal(`Switched to ${isLight ? 'light' : 'dark'} theme`);
+            });
         });
+    } else {
+        console.error('Theme checkboxes not found');
     }
 
-    // Projects page grid restoration with reduced projects
     if (window.location.pathname.includes('projects.html')) {
         const projectContainer = document.querySelector('.project-container');
         const projectGrid = document.getElementById('projectGrid');
@@ -253,7 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             populateProjects();
 
-            // Remove redundant import button and ensure existing one works
             const existingButton = document.querySelector('.import-projects-button');
             if (existingButton) {
                 existingButton.addEventListener('click', () => logToTerminal('Import Projects clicked (not implemented yet)'));
@@ -267,7 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Profile page form management
     if (window.location.pathname.includes('profile.html')) {
         const signInForm = document.getElementById('signInForm');
         const createAccountForm = document.getElementById('createAccountForm');
@@ -298,7 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Add Enter key support for Send button
     if (window.location.pathname.includes('create.html')) {
         const aiPrompt = document.getElementById('ai-prompt');
         const sendButton = document.querySelector('.btn-send');
@@ -308,10 +344,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     sendButton.classList.add('active');
                     sendButton.blur();
-                    sendButton.click(); // Trigger the existing click action
+                    sendButton.click();
                     setTimeout(() => sendButton.classList.remove('active'), 300);
                 }
             });
+        }
+    }
+
+    // Settings page logic with error handling
+    if (window.location.pathname.includes('settings.html')) {
+        const notificationsToggle = document.getElementById('notifications-toggle');
+        const clearMemoryButton = document.querySelector('.btn-clear-memory');
+
+        if (notificationsToggle) {
+            notificationsToggle.addEventListener('change', () => {
+                logToTerminal(`Notifications ${notificationsToggle.checked ? 'enabled' : 'disabled'}`);
+            });
+        } else {
+            console.error('Notifications toggle not found');
+        }
+
+        if (clearMemoryButton) {
+            clearMemoryButton.addEventListener('click', () => {
+                logToTerminal('Chat memory cleared (simulated)');
+            });
+        } else {
+            console.error('Clear memory button not found');
         }
     }
 });

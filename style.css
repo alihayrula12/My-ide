@@ -1154,3 +1154,55 @@ body.light .import-projects-button:active {
     color: #C252E1;
     border-color: #C252E1;
 }
+
+/* Settings-specific styles */
+.settings-section {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+    color: #E0D9F6;
+}
+
+body.light .settings-section {
+    border-color: #ccc;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.settings-section h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-clear-memory {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-clear-memory:hover {
+    background-color: #1a91da;
+}
+
+body.light .btn-clear-memory {
+    background-color: #1da1f2;
+}
+
+body.light .btn-clear-memory:hover {
+    background-color: #1a91da;
+}
+
+/* ... (rest of the existing styles remain unchanged) ... */

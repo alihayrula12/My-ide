@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Changed from style.css to styles.css -->
+</head>
+<body>
+    <header>
+        <div class="logo">⚙️REPLICAT</div>
+        <div class="theme-toggle-container">
+            <label class="theme-toggle">
+                <input type="checkbox" class="theme-checkbox">
+                <span class="slider">
+                    <span class="moon">🌙</span>
+                    <span class="sun">☀️</span>
+                </span>
+            </label>
+        </div>
+    </header>
+    <div class="container">
+        <div class="main-content">
+            <div class="card chat-container">
+                <h1>Settings</h1>
+                <div class="chat-history">
+                    <div class="settings-section">
+                        <h2>Theme</h2>
+                        <label class="theme-toggle">
+                            <input type="checkbox" class="theme-checkbox">
+                            <span>Toggle Light/Dark Mode</span>
+                        </label>
+                    </div>
+                    <div class="settings-section">
+                        <h2>Notifications</h2>
+                        <label>
+                            <input type="checkbox" id="notifications-toggle">
+                            <span>Enable Notifications</span>
+                        </label>
+                    </div>
+                    <div class="settings-section">
+                        <h2>Data Controls</h2>
+                        <button class="btn-clear-memory">Clear Chat Memory</button>
+                        <p>Manage memory: Tap the book icon below messages to forget specific chats or go to Data Controls in settings to disable memory.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="bottom-nav">
+        <div class="nav-item" data-nav="profile">Profile</div>
+        <div class="nav-item" data-nav="create">Create</div>
+        <div class="nav-item" data-nav="projects">Projects</div>
+        <div class="nav-item" data-nav="settings" class="active">Settings</div>
+    </nav>
+    <script src="script.js"></script>
+</body>
+</html>
