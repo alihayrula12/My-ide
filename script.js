@@ -67,6 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const thoughts = inputHistory.length > 1 
                                     ? ['Analyzing your input...', 'Crafting a detailed plan...']
                                     : ['Interpreting your idea...', 'Building a response...'];
+                                if (inputHistory.length > 1) {
+                                    const latestPrompt = prompt.toLowerCase();
+                                    let summary = 'Got it! You mentioned ';
+                                    const features = [];
+                                    if (latestPrompt.includes('calendar')) features.push('a calendar');
+                                    if (latestPrompt.includes('daily login') || latestPrompt.includes('login goals')) features.push('daily login goals');
+                                    if (latestPrompt.includes('workout')) features.push('workout features');
+                                    summary += features.join(', ') + '. ';
+                                    const actions = ['Crafting a plan based on that!', 'Putting together a strategy now!', 'Building a roadmap for you!'];
+                                    summary += actions[Math.floor(Math.random() * actions.length)];
+                                    const ackMessage = document.createElement('div');
+                                    ackMessage.className = 'message ai-message';
+                                    ackMessage.textContent = summary;
+                                    chatHistory.insertBefore(ackMessage, typingIndicator);
+                                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                                }
                                 thoughts.forEach((thought, index) => {
                                     setTimeout(() => displayThought(thought), index * 1000);
                                 });
