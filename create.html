@@ -6,6 +6,8 @@
     <title>REPLICAT - Create</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
+    <!-- Fetch polyfill as a fallback -->
+    <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.2/dist/fetch.umd.js"></script>
 </head>
 <body class="dark">
     <div class="container">
@@ -68,5 +70,16 @@
         </div>
     </div>
     <script src="script.js"></script>
+    <!-- Initialize Monaco Editor -->
+    <script>
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.34.0/min/vs' } });
+        require(['vs/editor/editor.main'], function() {
+            monaco.editor.create(document.getElementById('editor'), {
+                value: '// Start coding here\nconsole.log("Hello, REPLICAT!");',
+                language: 'javascript',
+                theme: 'vs-dark'
+            });
+        });
+    </script>
 </body>
 </html>
