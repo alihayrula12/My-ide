@@ -179,7 +179,7 @@ h1 {
 
 .chat-container {
     order: 1;
-    width: 320px;
+    width: 384px; /* Increased from 320px to 120% (384px) */
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -210,7 +210,7 @@ h1 {
     margin: 10px 0;
     padding: 10px;
     border-radius: 10px;
-    max-width: 320px;
+    max-width: 384px; /* Updated to match new container width */
     word-wrap: break-word;
     overflow-x: hidden;
     font-size: 14px;
@@ -1105,7 +1105,7 @@ body.light .btn-send::after {
     .chat-container,
     .editor-preview {
         width: 100%;
-        max-width: 600px;
+        max-width: 720px; /* Updated to 120% of 600px */
         order: 0;
     }
 }
@@ -1204,5 +1204,3 @@ body.light .btn-clear-memory {
 body.light .btn-clear-memory:hover {
     background-color: #1a91da;
 }
-
-/* ... (rest of the existing styles remain unchanged) ... */
