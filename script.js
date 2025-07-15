@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(message);
     };
 
+    let sessionId = Date.now().toString();
+    let inputHistory = [];
+
     const setupButtons = () => {
         const buttons = [
             { selector: '.btn-upload', action: () => {
@@ -26,12 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 fileInput.click();
             }},
-            { selector: '.btn-send', action: () => {
+            { selector: '.btn-send', action: async () => {
                 const chatHistory = document.querySelector('.chat-history');
                 const aiPrompt = document.getElementById('ai-prompt');
                 if (chatHistory && aiPrompt) {
                     const prompt = aiPrompt.value.trim();
                     if (prompt) {
+                        inputHistory.push(prompt);
                         const userMessage = document.createElement('div');
                         userMessage.className = 'message user-message';
                         userMessage.textContent = prompt;
@@ -51,49 +55,61 @@ document.addEventListener('DOMContentLoaded', () => {
                             setTimeout(() => thoughtMessage.remove(), 3000);
                         };
 
-                        const processAIResponse = () => {
-                            let response = '';
-                            const thoughts = [];
-                            if (prompt.toLowerCase().includes('clarify')) {
-                                thoughts.push('I need to reanalyze the structure of the prompt...');
+                        const processAIResponse = async () => {
+                            try {
+                                const endpoint = inputHistory.length > 1 ? '/ai/followup' : '/ai/complete';
+                                const response = await fetch(`http://localhost:3000${endpoint}`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ prompt, code: '', filePaths: [], sessionId })
+                                });
+                                const data = await response.json();
+                                const thoughts = inputHistory.length > 1 
+                                    ? ['Analyzing your input...', 'Crafting a detailed plan...']
+                                    : ['Interpreting your idea...', 'Building a response...'];
+                                thoughts.forEach((thought, index) => {
+                                    setTimeout(() => displayThought(thought), index * 1000);
+                                });
+
                                 setTimeout(() => {
-                                    const clarification = prompt('Please provide more details:');
-                                    if (clarification) {
-                                        thoughts.push('Now that that’s clarified, I should refine the logic...');
-                                        response = `Clarified response based on: ${clarification}`;
-                                    } else {
-                                        thoughts.push('No clarification provided, proceeding with default analysis...');
-                                        response = 'No clarification provided, using default response.';
-                                    }
-                                }, 1000);
-                            } else if (prompt.toLowerCase().includes('code')) {
-                                thoughts.push('I need to evaluate the code structure...');
-                                thoughts.push('Now that that’s done, I should optimize the syntax...');
-                                response = 'Mock code response generated.';
-                            } else if (prompt.toLowerCase().includes('data')) {
-                                thoughts.push('I need to build a dataset model...');
-                                thoughts.push('Now that that’s done, I should analyze the trends...');
-                                response = 'Mock data analysis response.';
-                            } else {
-                                thoughts.push('I need to interpret the general intent...');
-                                thoughts.push('Now that that’s done, I should formulate a response...');
-                                response = 'Mock AI response';
-                            }
-
-                            thoughts.forEach((thought, index) => {
-                                setTimeout(() => displayThought(thought), index * 1000);
-                            });
-
-                            setTimeout(() => {
+                                    typingIndicator.remove();
+                                    let currentMessage = null;
+                                    data.completion.forEach(line => {
+                                        const trimmedLine = line.trim();
+                                        if (trimmedLine.match(/^(Features|Practical Advice|Follow-up Questions):$/i)) {
+                                            if (currentMessage) chatHistory.appendChild(currentMessage);
+                                            currentMessage = document.createElement('div');
+                                            currentMessage.className = 'message ai-message';
+                                            currentMessage.textContent = trimmedLine;
+                                        } else if (currentMessage && trimmedLine.match(/^\d+\.\s/)) {
+                                            if (currentMessage.textContent) currentMessage.textContent += '\n';
+                                            currentMessage.textContent += trimmedLine;
+                                        } else if (currentMessage && trimmedLine.match(/^-\sFeature:/)) {
+                                            if (currentMessage.textContent) currentMessage.textContent += '\n';
+                                            currentMessage.textContent += trimmedLine;
+                                        } else if (currentMessage) {
+                                            currentMessage.textContent += '\n' + trimmedLine;
+                                        } else {
+                                            currentMessage = document.createElement('div');
+                                            currentMessage.className = 'message ai-message';
+                                            currentMessage.textContent = trimmedLine;
+                                            chatHistory.appendChild(currentMessage);
+                                        }
+                                    });
+                                    if (currentMessage) chatHistory.appendChild(currentMessage);
+                                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                                    aiPrompt.value = '';
+                                    logToTerminal('AI response received');
+                                }, thoughts.length * 1000 + 1000);
+                            } catch (error) {
+                                logToTerminal(`AI error: ${error.message}`);
                                 typingIndicator.remove();
                                 const aiMessage = document.createElement('div');
                                 aiMessage.className = 'message ai-message';
-                                aiMessage.textContent = response;
+                                aiMessage.textContent = 'Error fetching AI response.';
                                 chatHistory.appendChild(aiMessage);
                                 chatHistory.scrollTop = chatHistory.scrollHeight;
-                                aiPrompt.value = '';
-                                logToTerminal('AI response sent');
-                            }, thoughts.length * 1000 + 1000);
+                            }
                         };
 
                         processAIResponse();
@@ -351,7 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Settings page logic with error handling
     if (window.location.pathname.includes('settings.html')) {
         const notificationsToggle = document.getElementById('notifications-toggle');
         const clearMemoryButton = document.querySelector('.btn-clear-memory');
